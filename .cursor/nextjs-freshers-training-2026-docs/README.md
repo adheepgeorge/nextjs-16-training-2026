@@ -1,0 +1,1 @@
+# nextjs-freshers-training-2026
