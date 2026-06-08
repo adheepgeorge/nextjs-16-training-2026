@@ -39,4 +39,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.cursor/
+# Cursor plan-runner state only — training docs in .cursor/ stay tracked
+.cursor/plans/
