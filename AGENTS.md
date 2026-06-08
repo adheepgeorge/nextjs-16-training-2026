@@ -22,16 +22,30 @@ Do **not** add `cacheComponents` to `next.config.ts`. This teaching repo keeps C
 - Mock data lives in `src/lib/data.ts`; route handlers in `src/app/api/`.
 - Full demo spec: `.cursor/plan.md` (sections 4, 7, 8).
 
+## Teaching scripts (`teaching-scripts/`)
+
+- One script per session, authored and committed **on that session's branch** (alongside the code), before branching to the next session.
+- Generate from what was **actually built** — real file paths, routes, and v16 gotchas. Never invent demos.
+- **Always include Mermaid diagrams** to explain concepts visually. Aim for one diagram per major concept, e.g.:
+  - file-tree → URL mapping (`flowchart`)
+  - request/render flow, esp. `loading.tsx`/Suspense streaming (`sequenceDiagram`)
+  - branching logic like render / `notFound()` / `throw` (`flowchart` decision tree)
+  - layout nesting / what re-renders on navigation (`flowchart`)
+- Mermaid rules: fence with ```` ```mermaid ````; use `<br/>` (not `\n`) for line breaks in node labels; put a one-line **"Say:"** narration cue under each diagram so the instructor knows how to present it.
+- Keep the per-session template: header (title, duration, build-along branch, learning goal) → pre-flight (watch-demo + build-along) → opening hook → demo-by-demo (paths, Say/Show/Ask, gotcha) → recap → time budget.
+
 ## Branch model (locked)
 
-All work happens on **`main`**. The four `session-N-<topic>-start` branches are read-only snapshots created with `git branch <name>` (pointer at HEAD, no checkout). Never commit onto a session branch.
+Dedicated per-session branches, **chained**: each is branched from the previous session's tip, built, committed, and pushed. The final session branch is merged into `main`, where the companion docs are then committed. Build along by checking out the **previous** session's branch.
 
-| Branch | State captured |
-|---|---|
-| `session-1-routing-start` | Clean scaffold + docs + agent rules |
-| `session-2-components-start` | After S1 routing built |
-| `session-3-actions-start` | After S2 components built |
-| `session-4-antipatterns-start` | After S3 actions built |
+| Branch | Branched from | Contents |
+|---|---|---|
+| `session-0-scaffold` | `main` @ scaffold | Clean scaffold + docs + agent rules |
+| `session-1-routing` | `session-0-scaffold` | + nav hub, `(s1-routing)/` routes, `src/lib/data.ts` |
+| `session-2-components` | `session-1-routing` | + `(s2-components)/` routes, `/api/users` |
+| `session-3-actions` | `session-2-components` | + `(s3-actions)/` routes |
+| `session-4-antipatterns` | `session-3-actions` | + `/anti-patterns` |
+| `main` | merge of `session-4-antipatterns` | Full course + `teaching-scripts/`, `INSTRUCTOR.md`, `CHEATSHEET.md`, `README.md` |
 
-`main` ends ahead of `session-4-antipatterns-start` (S4 + companion docs).
+**Watch demo** → `main`. **Build along** → previous session's branch (e.g. build S2 from `session-1-routing`). `main` stays at the scaffold until the final merge.
 <!-- END:nextjs-agent-rules -->
