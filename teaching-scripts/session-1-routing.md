@@ -85,8 +85,9 @@ flowchart LR
 
 **File:** `src/app/page.tsx`
 
-- **Say:** "`page.tsx` at the root of `src/app/` = the `/` route. This is just a Server Component returning JSX — no `useState`, no client JS shipped."
+- **Say:** "`page.tsx` at the root of `src/app/` = the `/` route. The page itself is just a Server Component returning JSX — no `useState`, no client JS of its own."
 - **Show:** the `session1Demos` array → `<Link href=...>` cards. Hover a card, point at the Network tab: Next **prefetches** the linked route automatically.
+- **Show:** the persistent **left sidebar** comes from the root `layout.tsx` (`src/app/sidebar-nav.tsx`). It *is* a small Client Component (`'use client'`) — it uses `usePathname()` to highlight the active link — so the only client JS on `/` is that nav, not the page.
 - **Ask the room:** "Why use `<Link>` instead of a plain `<a>`?" → client-side nav + automatic prefetch, no full page reload.
 - **v16 gotcha:** Turbopack is the default bundler now. Notice the dev banner says *Turbopack* — there is **no `--turbopack` flag** anymore.
 
@@ -168,14 +169,15 @@ flowchart TD
 - **Show:** visit `/blog/trigger-error`. The page deliberately `throw`s. Next renders `error.tsx`.
 - **Say:** "`error.tsx` is a route-level error boundary. Note the **`'use client'`** at the top — error boundaries need to be Client Components because they take an interactive `reset()` callback."
 - **Show:** click **Try again** → calls `reset()`, re-renders the segment.
-- **Ask the room:** "Why must this one be a client component when the others aren't?" → it has interactivity (`onClick`, `reset`). Sets up the S2 server-vs-client boundary.
+- **Ask the room:** "Why must this *route file* be a client component?" → it has interactivity (`onClick`, `reset`). (The sidebar nav is also a client component, but for the same reason — it needs `usePathname()`; everything else in the route tree stays server-only.) Sets up the S2 server-vs-client boundary.
 
 ### 7. `/layout-demo` → Settings — nested layouts (~5 min)
 
 **Files:** `layout-demo/layout.tsx`, `layout-demo/page.tsx`, `layout-demo/settings/page.tsx`
 
 - **Say:** "A `layout.tsx` wraps every page in its folder **and all child folders**. Shared shell, defined once."
-- **Show:** the sidebar in `layout.tsx`. Navigate `/layout-demo` → `/layout-demo/settings`. The sidebar **stays mounted** — only the `{children}` swaps. No flicker.
+- **Show:** this route has **two** layouts nesting — the global app nav (left sidebar, from the root layout) *and* `layout-demo/layout.tsx`, which adds a **header + a horizontal tab strip** (`Overview | Settings`). Notice the inner layout is deliberately a *different shape* than the outer sidebar. Navigate `/layout-demo` → `/layout-demo/settings`: the header and tabs **stay mounted** (the active tab just moves) — only the `{children}` below swaps. No flicker.
+- **Show:** the active-tab highlight comes from `layout-demo/tabs.tsx`, a small `'use client'` component using `usePathname()` — the same pattern as the global nav.
 - **Show:** `settings/page.tsx` has **no import** of the layout — it inherits it automatically by position in the tree.
 - **Ask the room:** "Where does the root `<html>`/`<body>` come from?" → `src/app/layout.tsx`, the root layout that wraps the whole app.
 
@@ -183,14 +185,14 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  root["root layout.tsx<br/>(html, body, top nav)"] --> ld["layout-demo/layout.tsx<br/>(sidebar — stays mounted)"]
+  root["root layout.tsx<br/>(html, body, left sidebar nav)"] --> ld["layout-demo/layout.tsx<br/>(header + tab strip — stays mounted)"]
   ld --> page["page.tsx<br/>Overview"]
   ld --> settings["settings/page.tsx<br/>Settings"]
   swap["client nav /layout-demo ↔ /settings<br/>only this region re-renders"] -.-> page
   swap -.-> settings
 ```
 
-**Say:** "Navigating Overview ↔ Settings swaps only the inner `{children}`. Root layout and the sidebar never re-mount — that's why there's no flicker."
+**Say:** "Navigating Overview ↔ Settings swaps only the inner `{children}`. The root layout (sidebar) and the layout-demo header + tabs never re-mount — that's why there's no flicker."
 
 ---
 
