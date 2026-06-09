@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
 import "./globals.css";
+import { SidebarNav } from "./sidebar-nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,20 +30,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="flex min-h-full flex-col">
-        <header className="border-b border-zinc-200 bg-white">
-          <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-            <Link href="/" className="font-medium text-zinc-900">
-              Next.js 16 Training
-            </Link>
-            <span className="text-xs text-zinc-500">
-              Turbopack · App Router
-            </span>
-          </div>
-        </header>
-        <main className="flex-1">{children}</main>
+      <body>
+        <div className="shell">
+          <SidebarNav />
+          <main className="content">{children}</main>
+        </div>
       </body>
     </html>
   );

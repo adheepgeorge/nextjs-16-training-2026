@@ -6,28 +6,21 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
-      <Link href="/" className="text-sm text-zinc-500 hover:text-zinc-900">
+    <div className="wrap py-12">
+      <Link href="/" className="backlink">
         ← Back to demos
       </Link>
-      <h1 className="mt-4 text-3xl font-semibold">About this repo</h1>
-      <p className="mt-4 text-zinc-600 leading-7">
+      <h1 className="mt-4 text-3xl font-semibold tracking-tight">
+        About this repo
+      </h1>
+      <p className="mt-4 leading-7 text-ink-2">
         This file is{" "}
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm">
-          src/app/(s1-routing)/about/page.tsx
-        </code>
-        . The{" "}
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm">
-          (s1-routing)
-        </code>{" "}
-        folder is a route group — it organizes Session 1 demos without adding a
-        URL segment. The route is simply{" "}
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm">
-          /about
-        </code>
-        .
+        <code className="icode">src/app/(s1-routing)/about/page.tsx</code>. The{" "}
+        <code className="icode">(s1-routing)</code> folder is a route group — it
+        organizes Session 1 demos without adding a URL segment. The route is
+        simply <code className="icode">/about</code>.
       </p>
-      <p className="mt-4 text-zinc-600 leading-7">
+      <p className="mt-4 leading-7 text-ink-2">
         No data fetching here — just a server component that renders HTML on
         each request.
       </p>

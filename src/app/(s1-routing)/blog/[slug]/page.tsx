@@ -42,25 +42,21 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   return (
-    <article className="mx-auto max-w-3xl px-6 py-12">
-      <Link href="/blog" className="text-sm text-zinc-500 hover:text-zinc-900">
+    <article className="wrap py-12">
+      <Link href="/blog" className="backlink">
         ← Back to blog
       </Link>
-      <h1 className="mt-4 text-3xl font-semibold">{post.title}</h1>
-      <p className="mt-2 text-sm text-zinc-500">
-        Slug: <code className="rounded bg-zinc-100 px-1.5 py-0.5">{slug}</code>
+      <h1 className="mt-4 text-3xl font-semibold tracking-tight">
+        {post.title}
+      </h1>
+      <p className="mt-2 text-sm text-ink-3">
+        Slug: <code className="icode">{slug}</code>
       </p>
-      <p className="mt-6 text-zinc-700 leading-7">{post.content}</p>
-      <p className="mt-8 text-sm text-zinc-500">
+      <p className="mt-6 leading-7 text-ink-2">{post.content}</p>
+      <p className="mt-8 text-sm text-ink-3">
         Check the browser tab title — it came from{" "}
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm">
-          generateMetadata
-        </code>{" "}
-        using{" "}
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm">
-          await params
-        </code>{" "}
-        (v16: params is a Promise).
+        <code className="icode">generateMetadata</code> using{" "}
+        <code className="icode">await params</code> (v16: params is a Promise).
       </p>
     </article>
   );

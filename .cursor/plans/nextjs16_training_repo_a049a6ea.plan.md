@@ -9,11 +9,11 @@ todos:
     content: "DONE — remote origin wired + pushed; AGENTS.md + CLAUDE.md authored and committed (3a03019); .cursor/ training docs tracked; session-0-scaffold branch cut at 3a03019 and pushed"
     status: completed
   - id: s1
-    content: "S1 (session-1-routing): build nav hub, src/lib/data.ts, about/blog/blog[slug]+generateMetadata/layout-demo + special files (uncommitted in tree). Then author teaching-scripts/session-1-routing.md ON this branch, commit both, push. (Old f17fae9 abandoned when -start branches were deleted.)"
-    status: in_progress
+    content: "DONE — S1 (session-1-routing): nav hub, src/lib/data.ts, about/blog/blog[slug]+generateMetadata/layout-demo + special files + teaching-scripts/session-1-routing.md committed (d969d5c); branch pushed to origin."
+    status: completed
   - id: s2
-    content: "S2 (session-2-components): branch off session-1-routing tip; build users-server, users-client, counter, dashboard streaming, api/users route handler, plus if-time granular/parallel-fetch; author teaching-scripts/session-2-components.md on this branch; commit; push"
-    status: pending
+    content: "DONE (local) — S2 (session-2-components): users-server, users-client, counter (client leaf), dashboard streaming, api/users route handler, if-time dashboard/granular + parallel-fetch, nav-hub section, teaching-scripts/session-2-components.md committed (42a9d4d); build + Biome green. NOT YET PUSHED to origin (git push -u origin session-2-components pending)."
+    status: completed
   - id: s3
     content: "S3 (session-3-actions): branch off session-2-components tip; build guestbook + todos with server actions, revalidatePath, useActionState; author teaching-scripts/session-3-actions.md on this branch; commit; push"
     status: pending
@@ -48,23 +48,23 @@ Build the four-session Next.js 16 demo repo on a **chain of dedicated per-sessio
 
 Dedicated per-session branches, chained. Each is branched from the previous session's tip, so it contains **all prior sessions plus its own**. Build along by checking out the **previous** session's branch.
 
-| Branch | Branched from | Contents |
-|---|---|---|
-| `session-0-scaffold` | `main` @ `3a03019` | Clean scaffold + docs + agent rules |
-| `session-1-routing` | `session-0-scaffold` | + nav hub, `(s1-routing)/` routes, `src/lib/data.ts`, `teaching-scripts/session-1-routing.md` |
-| `session-2-components` | `session-1-routing` | + `(s2-components)/` routes, `/api/users`, `teaching-scripts/session-2-components.md` |
-| `session-3-actions` | `session-2-components` | + `(s3-actions)/` routes, `teaching-scripts/session-3-actions.md` |
-| `session-4-antipatterns` | `session-3-actions` | + `/anti-patterns`, `teaching-scripts/session-4-best-practices.md` |
-| `main` | merge of `session-4-antipatterns` | Full course + all 4 `teaching-scripts/` (via merge) **plus** `INSTRUCTOR.md`, `CHEATSHEET.md`, updated `README.md` |
+| Branch                   | Branched from                     | Contents                                                                                                           |
+| ------------------------ | --------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `session-0-scaffold`     | `main` @ `3a03019`                | Clean scaffold + docs + agent rules                                                                                |
+| `session-1-routing`      | `session-0-scaffold`              | + nav hub, `(s1-routing)/` routes, `src/lib/data.ts`, `teaching-scripts/session-1-routing.md`                      |
+| `session-2-components`   | `session-1-routing`               | + `(s2-components)/` routes, `/api/users`, `teaching-scripts/session-2-components.md`                              |
+| `session-3-actions`      | `session-2-components`            | + `(s3-actions)/` routes, `teaching-scripts/session-3-actions.md`                                                  |
+| `session-4-antipatterns` | `session-3-actions`               | + `/anti-patterns`, `teaching-scripts/session-4-best-practices.md`                                                 |
+| `main`                   | merge of `session-4-antipatterns` | Full course + all 4 `teaching-scripts/` (via merge) **plus** `INSTRUCTOR.md`, `CHEATSHEET.md`, updated `README.md` |
 
 Each session branch carries **its own teaching script** alongside its code — committed before branching to the next session. The 4 scripts accumulate down the chain and arrive on `main` through the final merge; only the cross-session docs are authored directly on `main`.
 
 ### Two ways to use the repo
 
-| Mode | Who | Checkout | What you get |
-|---|---|---|---|
-| **Watch demo** (default) | Instructor, freshers observing | `main` (after final merge) | Full finished app + nav hub to every route |
-| **Build along** | Attendee typing live, or instructor live-coding | The **previous** session's branch | Known baseline — prior sessions' code only; today's session is yours to build, then diff against this session's branch |
+| Mode                     | Who                                             | Checkout                          | What you get                                                                                                           |
+| ------------------------ | ----------------------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Watch demo** (default) | Instructor, freshers observing                  | `main` (after final merge)        | Full finished app + nav hub to every route                                                                             |
+| **Build along**          | Attendee typing live, or instructor live-coding | The **previous** session's branch | Known baseline — prior sessions' code only; today's session is yours to build, then diff against this session's branch |
 
 **Watch-demo pre-flight:** `git switch main`, `pnpm dev`, visit routes in teaching-script order.
 
@@ -83,7 +83,6 @@ flowchart LR
 ## Source of truth
 
 The full demo/route spec is in [.cursor/plan.md](.cursor/plan.md) (sections 4 "Demos to build", 7 "Build order", 8 "Files touched"). Per [AGENTS.md](AGENTS.md), consult `node_modules/next/dist/docs/` before writing any Next.js 16 code (async `params`/`cookies`, Turbopack default, Cache Components left off).
-
 
 ## Phase 0 — Repo wiring (done)
 
@@ -140,7 +139,7 @@ Each script is generated from what was actually built. Use a consistent template
 1. **Header** — session title, duration + clock slot (from `.cursor/plan.md` §The four sessions), the **build-along** branch (previous session's branch), and the one-line learning goal.
 2. **Pre-flight** — two blocks:
    - **Watch demo:** `git switch main`, `pnpm dev`, URLs in order.
-   - **Build along:** `git switch <previous-session-branch>`, `pnpm install` (if needed), `pnpm dev` — list what is *not* built yet (today's routes).
+   - **Build along:** `git switch <previous-session-branch>`, `pnpm install` (if needed), `pnpm dev` — list what is _not_ built yet (today's routes).
 3. **Opening hook (~2 min)** — framing question to say out loud.
 4. **Demo-by-demo walkthrough** — for each route: file paths, "Say this", "Show this", "Ask the room", v16 gotcha callouts.
 5. **Recap (~2 min)** — tie routes back to the §2 mental-model loop.

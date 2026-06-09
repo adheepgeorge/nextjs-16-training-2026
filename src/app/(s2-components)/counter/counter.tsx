@@ -6,21 +6,21 @@ export function Counter() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="flex items-center gap-4 rounded-lg border border-zinc-200 p-4">
+    <div className="card flex items-center gap-4 p-4">
       <button
         type="button"
         onClick={() => setCount((c) => c - 1)}
-        className="h-9 w-9 rounded-md border border-zinc-300 text-lg text-zinc-700 hover:bg-zinc-100"
+        className="h-9 w-9 rounded-md border border-rule-2 text-lg text-ink-2 transition-colors hover:bg-surface-3 hover:text-ink"
       >
         −
       </button>
-      <span className="min-w-12 text-center font-mono text-2xl tabular-nums">
+      <span className="mono min-w-12 text-center text-2xl tabular-nums text-ink">
         {count}
       </span>
       <button
         type="button"
         onClick={() => setCount((c) => c + 1)}
-        className="h-9 w-9 rounded-md border border-zinc-300 text-lg text-zinc-700 hover:bg-zinc-100"
+        className="h-9 w-9 rounded-md border border-rule-2 text-lg text-ink-2 transition-colors hover:bg-surface-3 hover:text-ink"
       >
         +
       </button>
