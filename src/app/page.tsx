@@ -29,41 +29,68 @@ const session1Demos = [
   },
 ];
 
+type Demo = { href: string; title: string; description: string };
+
+function DemoGrid({ demos }: { demos: Demo[] }) {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2">
+      {demos.map((demo) => (
+        <Link key={demo.href} href={demo.href} className="card-link px-5 py-4">
+          <span className="block font-medium text-ink">{demo.title}</span>
+          <p className="mt-1 text-sm leading-snug text-ink-3">
+            {demo.description}
+          </p>
+          <span className="mono mt-3 block text-xs text-blue-ink">
+            {demo.href}
+          </span>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 export default function Home() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
-      <header className="mb-10">
-        <p className="text-sm font-medium text-zinc-500">Next.js 16 Training</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight">
-          Demo nav hub
-        </h1>
-        <p className="mt-3 text-zinc-600">
-          Session 1 routes live under{" "}
-          <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm">
-            src/app/(s1-routing)/
-          </code>
-          . Route groups organize files without changing the URL.
+    <div className="wrap">
+      <header className="hero">
+        <p className="eyebrow">
+          Next.js 16 Training
+          <span className="pkg">next@16.2.7</span>
         </p>
+        <h1 className="hero-title">Demo nav hub</h1>
+        <p className="hero-lead">
+          A live-demo companion for the freshers training. Routes are grouped by
+          session with <strong>route groups</strong>, which organize files
+          without changing the URL.
+        </p>
+        <div className="hero-meta">
+          <span className="chip">
+            <span className="sq blue" />
+            Routing
+          </span>
+          <span className="chip">
+            <span className="sq green" />
+            Components &amp; data
+          </span>
+          <span className="chip">
+            <span className="sq amber" />
+            Server actions
+          </span>
+          <span className="chip">
+            <span className="sq violet" />
+            Best practices
+          </span>
+        </div>
       </header>
 
-      <section>
-        <h2 className="mb-4 text-lg font-medium">Session 1 — Routing</h2>
-        <ul className="grid gap-4">
-          {session1Demos.map((demo) => (
-            <li key={demo.href}>
-              <Link
-                href={demo.href}
-                className="block rounded-lg border border-zinc-200 p-4 transition-colors hover:border-zinc-400 hover:bg-zinc-50"
-              >
-                <span className="font-medium text-zinc-900">{demo.title}</span>
-                <p className="mt-1 text-sm text-zinc-600">{demo.description}</p>
-                <p className="mt-2 font-mono text-xs text-zinc-400">
-                  {demo.href}
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <section className="pt-12">
+        <span className="sec-num">01 — Routing</span>
+        <h2 className="sec-title">Session 1</h2>
+        <p className="mt-3 mb-6 max-w-xl text-sm text-ink-3">
+          Routes live under <code className="icode">src/app/(s1-routing)/</code>
+          .
+        </p>
+        <DemoGrid demos={session1Demos} />
       </section>
     </div>
   );

@@ -1,26 +1,461 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Geist / Geist Mono · warm off-white · 4 domain accents
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: oklch(0.985 0.003 90);
+  --bg-2: oklch(0.975 0.004 90);
+  --bg-3: oklch(0.965 0.005 90);
+  --ink: oklch(0.22 0.02 260);
+  --ink-2: oklch(0.4 0.018 260);
+  --ink-3: oklch(0.56 0.015 260);
+  --ink-4: oklch(0.7 0.012 260);
+  --rule: oklch(0.9 0.006 260);
+  --rule-2: oklch(0.82 0.008 260);
+
+  /* domain / layer accents — matched chroma */
+  --blue-50: oklch(0.965 0.02 250);
+  --blue-100: oklch(0.935 0.038 250);
+  --blue-300: oklch(0.78 0.09 250);
+  --blue-600: oklch(0.52 0.13 250);
+  --blue-700: oklch(0.42 0.12 250);
+
+  --violet-50: oklch(0.965 0.02 295);
+  --violet-100: oklch(0.935 0.04 295);
+  --violet-300: oklch(0.78 0.09 295);
+  --violet-600: oklch(0.52 0.14 295);
+  --violet-700: oklch(0.42 0.13 295);
+
+  --amber-50: oklch(0.965 0.025 80);
+  --amber-100: oklch(0.935 0.05 80);
+  --amber-300: oklch(0.8 0.1 80);
+  --amber-600: oklch(0.62 0.14 70);
+  --amber-700: oklch(0.5 0.13 65);
+
+  --green-50: oklch(0.965 0.022 150);
+  --green-100: oklch(0.935 0.045 150);
+  --green-300: oklch(0.78 0.085 150);
+  --green-600: oklch(0.52 0.11 150);
+  --green-700: oklch(0.42 0.1 150);
+
+  --rose-50: oklch(0.965 0.022 20);
+  --rose-300: oklch(0.8 0.09 20);
+  --rose-600: oklch(0.55 0.15 25);
+  --rose-700: oklch(0.45 0.14 25);
+
+  --teal-600: oklch(0.52 0.09 200);
+
+  --radius: 12px;
+  --radius-sm: 7px;
+  --maxw: 880px;
 }
 
+/* Expose the palette as Tailwind color/utility tokens (text-ink-2,
+   bg-surface-2, border-rule, etc.) so pages can use clean utilities. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
+
+  --color-surface: var(--bg);
+  --color-surface-2: var(--bg-2);
+  --color-surface-3: var(--bg-3);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+
+  --color-rule: var(--rule);
+  --color-rule-2: var(--rule-2);
+
+  --color-blue: var(--blue-600);
+  --color-blue-ink: var(--blue-700);
+  --color-violet: var(--violet-600);
+  --color-amber: var(--amber-600);
+  --color-amber-ink: var(--amber-700);
+  --color-green: var(--green-600);
+  --color-green-ink: var(--green-700);
+  --color-rose: var(--rose-600);
+  --color-rose-ink: var(--rose-700);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 32px;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family:
+      var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+      "Helvetica Neue", Arial, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    line-height: 1.6;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .mono {
+    font-family:
+      var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* ---------- Inline code ---------- */
+  .icode {
+    font-family:
+      var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.82em;
+    background: var(--bg-3);
+    border: 1px solid var(--rule);
+    padding: 1px 6px;
+    border-radius: 5px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  /* ---------- Text link ---------- */
+  .link {
+    color: var(--blue-700);
+    text-decoration: none;
+    border-bottom: 1px solid var(--blue-300);
+  }
+  .link:hover {
+    border-bottom-color: var(--blue-600);
+  }
+
+  /* ---------- Back link ---------- */
+  .backlink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--ink-3);
+    text-decoration: none;
+    transition: color 0.12s;
+  }
+  .backlink:hover {
+    color: var(--ink);
+  }
+
+  /* ---------- App shell ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: 264px minmax(0, 1fr);
+    min-height: 100vh;
+  }
+  .content {
+    padding: 0 64px 120px;
+  }
+  .wrap {
+    max-width: var(--maxw);
+  }
+
+  /* ---------- Sidebar nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 32px 24px 40px 32px;
+    border-right: 1px solid var(--rule);
+    background: var(--bg-2);
+  }
+  .nav-brand {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 18px;
+    text-decoration: none;
+  }
+  .nav-brand .mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: var(--bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .nav-brand .name {
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--ink);
+    padding-top: 1px;
+  }
+  .nav-brand .name .tier {
+    display: block;
+    margin-top: 3px;
+    font-family: var(--font-geist-sans), sans-serif;
+    font-size: 11px;
+    color: var(--ink-3);
+    font-weight: 400;
+  }
+  .nav-section {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    font-weight: 600;
+    margin: 18px 0 8px;
+  }
+  .nav a {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--ink-2);
+    font-size: 13px;
+    padding: 5px 10px;
+    border-radius: 7px;
+    line-height: 1.3;
+    transition:
+      background 0.12s,
+      color 0.12s;
+  }
+  .nav a .idx {
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 10.5px;
+    color: var(--ink-4);
+    width: 16px;
+    flex-shrink: 0;
+  }
+  .nav a:hover {
+    background: var(--bg-3);
+    color: var(--ink);
+  }
+  .nav a.active {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .nav a.active .idx {
+    color: oklch(0.75 0.01 260);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 64px 0 40px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 8px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow .pkg {
+    font-family: var(--font-geist-mono), monospace;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-2);
+    background: var(--bg-3);
+    border: 1px solid var(--rule);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .hero-title {
+    font-size: 46px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin: 0 0 18px;
+    max-width: 720px;
+    color: var(--ink);
+  }
+  .hero-lead {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 660px;
+    margin: 0;
+  }
+  .hero-lead strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 8px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  /* ---------- Chips ---------- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--ink-2);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .chip .sq {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+  }
+  .sq.blue {
+    background: var(--blue-600);
+  }
+  .sq.violet {
+    background: var(--violet-600);
+  }
+  .sq.amber {
+    background: var(--amber-600);
+  }
+  .sq.green {
+    background: var(--green-600);
+  }
+
+  /* ---------- Section heads ---------- */
+  .sec-num {
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 12px;
+    color: var(--ink-4);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .sec-title {
+    font-size: 26px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  /* ---------- Kicker / small uppercase label ---------- */
+  .kicker {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+  }
+
+  /* ---------- Cards ---------- */
+  .card {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+  }
+  .card-link {
+    display: block;
+    text-decoration: none;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    transition:
+      border-color 0.12s,
+      transform 0.12s,
+      background 0.12s;
+  }
+  .card-link:hover {
+    border-color: var(--rule-2);
+    transform: translateY(-1px);
+  }
+
+  /* ---------- Callout ---------- */
+  .note {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--ink-4);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  .note.tip {
+    border-left-color: var(--green-600);
+  }
+  .note.warn {
+    border-left-color: var(--amber-600);
+  }
+  .note .ico {
+    color: var(--ink-3);
+    padding-top: 1px;
+  }
+  .note.tip .ico {
+    color: var(--green-700);
+  }
+  .note.warn .ico {
+    color: var(--amber-700);
+  }
+  .note strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ---------- Button ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--bg);
+    cursor: pointer;
+    transition: opacity 0.12s;
+  }
+  .btn:hover {
+    opacity: 0.88;
+  }
+  .btn-ghost {
+    background: var(--bg);
+    color: var(--ink);
+    border-color: var(--rule-2);
+  }
+  .btn-ghost:hover {
+    background: var(--bg-3);
+    opacity: 1;
+  }
+}
+
+/* ---------- responsive guard ---------- */
+@media (max-width: 1080px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .nav {
+    display: none;
+  }
+  .content {
+    padding: 0 28px 80px;
+  }
+  .hero-title {
+    font-size: 36px;
+  }
 }
