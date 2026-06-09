@@ -29,6 +29,43 @@ const session1Demos = [
   },
 ];
 
+const session2Demos = [
+  {
+    href: "/users-server",
+    title: "Users (server)",
+    description:
+      "Async Server Component fetching data directly — no client JS.",
+  },
+  {
+    href: "/users-client",
+    title: "Users (client)",
+    description:
+      "'use client' + useEffect fetching the same data via /api/users.",
+  },
+  {
+    href: "/counter",
+    title: "Counter",
+    description: "The 'use client' boundary — state + events kept at a leaf.",
+  },
+  {
+    href: "/dashboard",
+    title: "Dashboard (streaming)",
+    description: "Slow page streams in behind an instant loading.tsx skeleton.",
+  },
+  {
+    href: "/dashboard/granular",
+    title: "Dashboard → granular",
+    description:
+      "Explicit <Suspense> boundaries stream each section on its own.",
+  },
+  {
+    href: "/parallel-fetch",
+    title: "Parallel fetch",
+    description:
+      "Promise.all runs independent fetches together — no waterfall.",
+  },
+];
+
 export default function Home() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
@@ -50,6 +87,39 @@ export default function Home() {
         <h2 className="mb-4 text-lg font-medium">Session 1 — Routing</h2>
         <ul className="grid gap-4">
           {session1Demos.map((demo) => (
+            <li key={demo.href}>
+              <Link
+                href={demo.href}
+                className="block rounded-lg border border-zinc-200 p-4 transition-colors hover:border-zinc-400 hover:bg-zinc-50"
+              >
+                <span className="font-medium text-zinc-900">{demo.title}</span>
+                <p className="mt-1 text-sm text-zinc-600">{demo.description}</p>
+                <p className="mt-2 font-mono text-xs text-zinc-400">
+                  {demo.href}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="mb-1 text-lg font-medium">
+          Session 2 — Components & Data Fetching
+        </h2>
+        <p className="mb-4 text-sm text-zinc-500">
+          Routes live under{" "}
+          <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm">
+            src/app/(s2-components)/
+          </code>
+          , plus the{" "}
+          <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm">
+            /api/users
+          </code>{" "}
+          Route Handler.
+        </p>
+        <ul className="grid gap-4">
+          {session2Demos.map((demo) => (
             <li key={demo.href}>
               <Link
                 href={demo.href}
