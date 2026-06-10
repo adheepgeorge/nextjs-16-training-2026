@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hands-On Exercises — Next.js 16 Training 2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --indigo: #6366f1;
+      --indigo-dark: #1e1b4b;
+      --indigo-soft: #eef2ff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --green: #16a34a;
+      --amber: #d97706;
+      --code-bg: #0f172a;
+      --code-ink: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 21px;
+    }
+
+    .layout {
+      display: flex;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* Sidebar nav */
+    nav.toc {
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      width: 250px;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 28px 18px;
+      border-right: 1px solid var(--line);
+      background: var(--card);
+      flex-shrink: 0;
+    }
+
+    nav.toc h2 {
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+
+    nav.toc a {
+      display: block;
+      padding: 7px 12px;
+      border-radius: 8px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 16.5px;
+      margin-bottom: 2px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    nav.toc a:hover {
+      background: var(--indigo-soft);
+      color: var(--indigo-dark);
+    }
+
+    nav.toc a .num {
+      display: inline-block;
+      width: 22px;
+      color: var(--indigo);
+      font-weight: 700;
+    }
+
+    main {
+      flex: 1;
+      min-width: 0;
+      padding: 40px 48px 96px;
+    }
+
+    header.hero {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 38px 40px;
+      margin-bottom: 32px;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.25);
+    }
+
+    header.hero h1 {
+      margin: 0 0 10px;
+      font-size: 40px;
+      line-height: 1.2;
+    }
+
+    header.hero p {
+      margin: 0;
+      font-size: 20px;
+      opacity: 0.95;
+      max-width: 70ch;
+    }
+
+    .badges {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    section.card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 26px;
+      scroll-margin-top: 20px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    section.card>h2 {
+      margin: 0 0 6px;
+      font-size: 30px;
+      color: var(--indigo-dark);
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .session-tag {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--indigo-soft);
+      color: var(--indigo);
+      padding: 4px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    h3 {
+      margin: 24px 0 8px;
+      font-size: 19px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .core-idea {
+      border-left: 4px solid var(--indigo);
+      background: var(--indigo-soft);
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin: 16px 0;
+      font-size: 19px;
+    }
+
+    .core-idea strong {
+      color: var(--indigo-dark);
+    }
+
+    .meta-line {
+      font-size: 17px;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
+
+    ol,
+    ul {
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .done-check {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 14px 20px 14px 18px;
+      margin: 14px 0;
+    }
+
+    .done-check h3 {
+      color: var(--green);
+      margin-top: 0;
+    }
+
+    .stretch {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 14px 20px 14px 18px;
+      margin: 14px 0;
+    }
+
+    .stretch h3 {
+      color: var(--amber);
+      margin-top: 0;
+    }
+
+    code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.88em;
+      color: #be185d;
+    }
+
+    pre.snippet {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 12px 0 6px;
+    }
+
+    pre.snippet code {
+      background: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    .snippet-note {
+      font-size: 16px;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+
+    a {
+      color: var(--indigo);
+    }
+
+    .docs a {
+      word-break: break-word;
+    }
+
+    .docs li {
+      font-size: 18px;
+      color: var(--ink);
+    }
+
+    .docs code {
+      font-size: 0.85em;
+    }
+
+    .callout {
+      border: 1px dashed var(--indigo);
+      background: #fafaff;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 19px;
+    }
+
+    .say {
+      font-style: italic;
+      color: var(--indigo-dark);
+      background: var(--indigo-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin: 16px 0;
+    }
+
+    .say b {
+      font-style: normal;
+    }
+
+    .mermaid {
+      text-align: center;
+      margin: 24px 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px 18px;
+    }
+
+    /* Diagrams render at their natural (font-driven) size, centered,
+       and only shrink if wider than the card. */
+    .mermaid svg {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+    /* The intro overview arc is just a 4-step map — keep it small. */
+    .mermaid.compact svg {
+      max-width: 360px !important;
+    }
+
+    /* S2 has two parallel branches — give it more room. */
+    #s2 .mermaid.compact svg {
+      max-width: 580px !important;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 32px 0;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 17px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 880px) {
+      nav.toc {
+        display: none;
+      }
+
+      main {
+        padding: 24px 18px 64px;
+      }
+
+      header.hero {
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <nav class="toc">
+      <h2>Sessions</h2>
+      <a href="#rules"><span class="num">·</span>Why fundamentals matter</a>
+      <a href="#s0"><span class="num">0</span>Scaffold</a>
+      <a href="#s1"><span class="num">1</span>Routing</a>
+      <a href="#s2"><span class="num">2</span>Components &amp; Data</a>
+      <a href="#s3"><span class="num">3</span>Server Actions</a>
+      <a href="#s4"><span class="num">4</span>Judgment</a>
+      <a href="#wrap"><span class="num">·</span>Wrap-up</a>
+    </nav>
+
+    <main>
+      <header class="hero">
+        <h1>Hands-On Exercises</h1>
+        <p>One tiny build per session. Each exercise ends with a small, self-contained task you build in <strong>your
+            own brand-new Next.js 16 repo</strong> — drilling the one core idea of its session, sized for ~8–12 minutes
+          after the demo.</p>
+        <div class="badges">
+          <span class="badge">Next.js 16</span>
+          <span class="badge">App Router</span>
+          <span class="badge">Turbopack default</span>
+          <span class="badge">Type it — don't paste</span>
+        </div>
+      </header>
+
+      <p><strong>Why a fresh repo:</strong> scaffolding once and growing it across all four sessions means you own the
+        whole loop — route → read → write → judge — in code you typed yourself.</p>
+
+      <!-- WHY FUNDAMENTALS -->
+      <section class="card" id="rules">
+        <h2>Why fundamentals matter</h2>
+        <p>These exercises are short on purpose — the value isn't in finishing them, it's in the understanding you build
+          along the way. A few gentle suggestions to get the most out of them:</p>
+        <ul>
+          <li><strong>Lean on your own understanding first.</strong> Reaching for AI assistants gives you output, but
+            the deep, reach-for-it-anywhere grasp of the fundamentals only comes from working it through yourself. That
+            foundation is what makes everything afterwards faster.</li>
+          <li><strong>Typing it beats pasting it.</strong> When you type a pattern out — rather than copying from the
+            slides or a neighbour — the small moments of "wait, why this?" are exactly where the learning sticks.</li>
+          <li><strong>Recall the pattern you just watched.</strong> Every task maps to a demo you saw minutes ago. If
+            you're stuck, re-open the demo, read it, and then write your own version from understanding — that's the
+            muscle worth building.</li>
+          <li><strong>Aim for the behaviour, not perfect code.</strong> You're "done" when the <em>Done-check</em> is
+            true. There's no single right way to type it, so don't sweat the style — focus on understanding why it
+            works.</li>
+        </ul>
+
+        <div class="mermaid compact">
+          %%{init: {'themeVariables': {'fontSize': '14px'}, 'flowchart': {'nodeSpacing': 28, 'rankSpacing': 30}}}%%
+          flowchart TD
+          s1["S1 — Route it<br />file → URL, await params"] --> s2["S2 — Read it<br />async Server Component"]
+          s2 --> s3["S3 — Write it<br />'use server' + revalidatePath"]
+          s3 --> s4["S4 — Judge it<br />server-first, client at leaves"]
+          classDef x fill:#eef2ff,stroke:#6366f1,color:#1e1b4b
+          class s1,s2,s3,s4 x
+        </div>
+
+        <div class="say"><b>Say:</b> "By the end you'll have built one small app that routes, reads, writes, and that
+          you can critique — all typed by you."</div>
+
+        <h3>Where to look things up</h3>
+        <p>Reading the docs <strong>is</strong> the skill — it's the habit that will serve you long after this course.
+          Each exercise lists the exact pages to refer to.</p>
+        <ul class="docs">
+          <li><strong>Online:</strong> the official Next.js 16 docs at <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app">nextjs.org/docs/app</a>.</li>
+          <li><strong>React-only APIs</strong> (e.g. <code>useActionState</code>) live in the React docs at <a
+              target="_blank" rel="noopener noreferrer" href="https://react.dev/reference/react">react.dev</a>.</li>
+        </ul>
+      </section>
+
+      <!-- SESSION 0 -->
+      <section class="card" id="s0">
+        <h2><span class="session-tag">Session 0</span> Scaffold <span
+            style="font-size:14px;color:var(--muted);font-weight:400;">(do once, ~5 min)</span></h2>
+        <p>Before Session 1's exercise, everyone needs a clean Next.js 16 app. Walk this together.</p>
+        <ul>
+          <li><strong>Task:</strong> create a fresh app with the official scaffolder, then run the dev server.</li>
+          <li><strong>Hint:</strong> use <code>create-next-app</code> (App Router, TypeScript). In <strong>v16,
+              Turbopack is the default</strong> <em>(Turbopack is the tool that bundles all your files and rebuilds the
+              page as you save — think of it as the engine that turns your code into a running site; the new one is just
+              much faster than the old one)</em> — there is <strong>no <code>--turbopack</code> flag</strong> to pass.
+            <code>pnpm dev</code> is enough.</li>
+          <li><strong>Done-check:</strong> <code>pnpm dev</code> boots, the starter page loads at
+            <code>http://localhost:3000</code>, and the dev banner mentions <strong>Turbopack</strong>.</li>
+          <li><strong>Confirm versions:</strong> <code>next</code> is <code>16.x</code>, <code>react</code> /
+            <code>react-dom</code> are <code>19.x</code>.</li>
+          <li><strong>Leave caching alone:</strong> do <strong>not</strong> add <code>cacheComponents</code> to
+            <code>next.config.ts</code>. We keep Cache Components <strong>off</strong> and <strong>do not cover
+              caching</strong> in this course.</li>
+        </ul>
+        <h3>Docs to refer</h3>
+        <ul class="docs">
+          <li><strong>Installation</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/installation">getting-started/installation</a></li>
+          <li><strong>Project Structure</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/project-structure">getting-started/project-structure</a>
+          </li>
+          <li><strong><code>create-next-app</code> CLI</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/cli/create-next-app">api-reference/cli/create-next-app</a>
+          </li>
+        </ul>
+        <div class="callout">Keep this same repo for Sessions 1–4. Each exercise adds to it.</div>
+      </section>
+
+      <!-- SESSION 1 -->
+      <section class="card" id="s1">
+        <h2><span class="session-tag">Session 1</span> Routing: "files are the router"</h2>
+        <div class="core-idea">
+          <strong>Core idea:</strong> a file's path in <code>src/app/</code> <em>is</em> its URL. Dynamic segments use
+          <code>[brackets]</code>, and <code>params</code> is a <strong>Promise you must <code>await</code></strong> in
+          v16. Special files (<code>loading</code>, <code>not-found</code>) add behaviour with zero config.
+        </div>
+        <p class="meta-line"><strong>Time:</strong> ~12 min · <strong>Maps to demo:</strong> <code>/about</code>,
+          <code>/blog/[slug]</code>, <code>blog/loading.tsx</code></p>
+
+        <h3>Task</h3>
+        <p>In the repo you scaffolded:</p>
+        <ol>
+          <li>Make a <strong>plain page</strong> that appears at <code>/about</code>.</li>
+          <li>Make a <strong>dynamic route</strong> at <code>/greet/[name]</code> that reads the name <strong>from the
+              URL</strong> and renders a heading like "Hello, Ada" for <code>/greet/ada</code>.</li>
+          <li>Add a <strong>loading skeleton</strong> to one route that fetches slowly, so a fallback shows before the
+            content.</li>
+          <li>Link to both new pages from the <strong>home page</strong> using <code>&lt;Link&gt;</code>.</li>
+        </ol>
+
+        <h3>How the parts fit together</h3>
+        <div class="mermaid compact">
+          %%{init: {'themeVariables': {'fontSize': '14px'}, 'flowchart': {'nodeSpacing': 28, 'rankSpacing': 30}}}%%
+          flowchart TD
+          classDef file fill:#eef2ff,stroke:#6366f1,color:#1e1b4b
+          classDef url fill:#f0fdf4,stroke:#16a34a,color:#14532d
+          a["about/page.tsx"]:::file --> ua["/about"]:::url
+          g["greet/[name]/page.tsx<br />await params → name"]:::file --> ug["/greet/ada<br />renders 'Hello, ada'"]:::url
+          l["loading.tsx<br />(same folder as a slow page)"]:::file --> ul["skeleton shows<br />while data resolves"]:::url
+          h["home page<br />links to both"]:::file --> uh["client-side nav<br />+ prefetch"]:::url
+        </div>
+        <p class="snippet-note">Each file you create maps to one URL (left → right). The diagram shows the
+          <em>pieces</em> and where they live — you still write each one yourself.</p>
+
+        <h3>Hints (concept, not code)</h3>
+        <ul>
+          <li>For (1): the URL <code>/about</code> tells you exactly which folder + file to create. No router config
+            anywhere.</li>
+          <li>For (2): the folder name carries the dynamic part. Inside the page, <code>params</code> is a
+            <strong>Promise</strong> — you must <code>await</code> it before reading <code>name</code>. (Old tutorials
+            that do <code>params.name</code> directly are wrong for v16 — this is <em>the</em> headline breaking
+            change.)</li>
+          <li>For (3): you don't wire up a spinner in React. Name a file by convention in the route folder and Next
+            shows it while the async page resolves. To <em>see</em> it, give your data fetch an artificial delay.</li>
+          <li>For (4): why <code>&lt;Link&gt;</code> and not <code>&lt;a&gt;</code>? Client-side nav + automatic
+            prefetch.</li>
+        </ul>
+
+        <div class="done-check">
+          <h3>Done-check</h3>
+          <ul>
+            <li><code>/about</code> renders your text.</li>
+            <li><code>/greet/ada</code> shows "Hello, ada"; changing the URL segment changes the greeting.</li>
+            <li>Hard-refreshing the slow route flashes the skeleton, then swaps in real content.</li>
+            <li>Clicking the home-page links navigates without a full page reload.</li>
+          </ul>
+        </div>
+
+        <div class="stretch">
+          <h3>Stretch (if fast)</h3>
+          <ul>
+            <li>Add a <code>not-found.tsx</code> and call the <code>notFound()</code> helper for an unknown value.</li>
+            <li>Give the dynamic page a per-page <code>&lt;title&gt;</code> via <code>generateMetadata</code> (remember:
+              <code>await params</code> there too).</li>
+          </ul>
+        </div>
+
+        <h3>Docs to refer</h3>
+        <ul class="docs">
+          <li><strong>Layouts and Pages</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/layouts-and-pages">getting-started/layouts-and-pages</a>
+          </li>
+          <li><strong>Dynamic Routes</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/file-conventions/dynamic-routes">file-conventions/dynamic-routes</a>
+          </li>
+          <li><strong><code>page.js</code></strong> (<code>params</code> is a <strong>Promise</strong> in v16) — <a
+              target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/file-conventions/page">file-conventions/page</a></li>
+          <li><strong><code>loading.js</code></strong> (the streaming fallback) — <a target="_blank"
+              rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/file-conventions/loading">file-conventions/loading</a>
+          </li>
+          <li><strong>Linking and Navigating</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/linking-and-navigating">getting-started/linking-and-navigating</a>
+          </li>
+          <li><em>Stretch:</em> <code>not-found.js</code> + <code>notFound()</code> — <a target="_blank"
+              rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/file-conventions/not-found">file-conventions/not-found</a>
+            · <code>generateMetadata</code> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/functions/generate-metadata">functions/generate-metadata</a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- SESSION 2 -->
+      <section class="card" id="s2">
+        <h2><span class="session-tag">Session 2</span> Components &amp; Data: "server by default"</h2>
+        <div class="core-idea">
+          <strong>Core idea:</strong> components render on the <strong>server by default</strong>. An <code>async</code>
+          Server Component can <code>await</code> its data inline — no <code>useEffect</code>, no spinner, no fetching
+          JS in the bundle. Reach for <code>'use client'</code> only for interactivity, and keep it at the
+          <strong>leaves</strong>.
+        </div>
+        <p class="meta-line"><strong>Time:</strong> ~12 min · <strong>Maps to demo:</strong> <code>/users-server</code>,
+          <code>/counter</code></p>
+
+        <h3>Task</h3>
+        <ol>
+          <li>Create a tiny <strong>mock data module</strong> exporting an <code>async</code> function that returns a
+            small list (e.g. users or products) after a short artificial delay.</li>
+          <li>Build a page at <code>/users-server</code> that is an <strong>async Server Component</strong>:
+            <code>await</code> your data function and render the list. <strong>No</strong> <code>useState</code>,
+            <strong>no</strong> <code>useEffect</code>.</li>
+          <li>Build a page at <code>/counter</code> that is a <strong>Server Component</strong> containing exactly one
+            small <strong>client leaf</strong> — a button that increments a number. Only the button should be
+            <code>'use client'</code>; the surrounding text stays server-rendered.</li>
+        </ol>
+
+        <h3>How the parts fit together</h3>
+        <div class="mermaid compact">
+          %%{init: {'themeVariables': {'fontSize': '20px'}, 'flowchart': {'nodeSpacing': 48, 'rankSpacing': 52}}}%%
+          flowchart TD
+          classDef srv fill:#f0fdf4,stroke:#16a34a,color:#14532d
+          classDef cli fill:#fff7ed,stroke:#ea580c,color:#7c2d12
+          d["lib/data.ts<br />async getData() + delay"]:::srv
+          us["/users-server page<br />async Server Component"]:::srv
+          ct["/counter page<br />Server Component (no JS)"]:::srv
+          leaf["Counter button<br />'use client' leaf"]:::cli
+          d -->|"await at render"| us
+          us -->|"data already in HTML"| html["browser gets<br />finished HTML"]
+          ct --> txt["heading + prose<br />server-rendered"]
+          ct --> leaf
+          leaf -->|"useState + onClick"| js["only this ships JS"]
+        </div>
+        <p class="snippet-note">Green = stays on the server; orange = the one small client leaf. The whole skill is
+          keeping that orange box as small as possible.</p>
+
+        <h3>Hints (concept, not code)</h3>
+        <ul>
+          <li>For (2): the page's function signature is the tell — it's <code>async</code>, and you <code>await</code>
+            inside it. The data ends up in the <strong>initial HTML</strong>, so the browser makes no API call to render
+            it.</li>
+          <li>For (3): the page file has <strong>no</strong> directive (server). It imports a separate component file
+            whose <strong>first line</strong> is <code>'use client'</code> and which holds the <code>useState</code> +
+            <code>onClick</code>. Draw the client boundary as <strong>low in the tree</strong> as possible.</li>
+          <li>Ask yourself before adding <code>'use client'</code>: <em>does this piece need state, events, or
+              effects?</em> If no → it stays a Server Component.</li>
+        </ul>
+
+        <div class="done-check">
+          <h3>Done-check</h3>
+          <ul>
+            <li>On <code>/users-server</code>, <strong>View Source</strong> (not DevTools Elements) shows the list items
+              already in the HTML, and the <strong>Network tab shows no client-side fetch</strong> for that data.</li>
+            <li>On <code>/counter</code>, the button increments, but the explanatory text around it is present in View
+              Source (proving it rendered on the server).</li>
+          </ul>
+        </div>
+
+        <div class="stretch">
+          <h3>Stretch (if fast)</h3>
+          <ul>
+            <li>Build <code>/users-client</code> the <em>old</em> way: a <code>'use client'</code> page that fetches
+              from a Route Handler (<code>app/api/.../route.ts</code>) in <code>useEffect</code> with a manual loading
+              flag. Compare the spinner + extra round-trip against <code>/users-server</code>.</li>
+            <li>Wrap a slow section in <code>&lt;Suspense&gt;</code> instead of a whole-page <code>loading.tsx</code>.
+            </li>
+          </ul>
+        </div>
+
+        <h3>Docs to refer</h3>
+        <ul class="docs">
+          <li><strong>Server and Client Components</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/server-and-client-components">getting-started/server-and-client-components</a>
+          </li>
+          <li><strong>Fetching Data</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/fetching-data">getting-started/fetching-data</a></li>
+          <li><strong><code>'use client'</code> directive</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/directives/use-client">directives/use-client</a></li>
+          <li><em>Stretch:</em> <strong>Route Handlers</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/route-handlers">getting-started/route-handlers</a> ·
+            <strong>Streaming / <code>&lt;Suspense&gt;</code></strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/guides/streaming">guides/streaming</a></li>
+        </ul>
+      </section>
+
+      <!-- SESSION 3 -->
+      <section class="card" id="s3">
+        <h2><span class="session-tag">Session 3</span> Server Actions: "write it, then revalidate"</h2>
+        <div class="core-idea">
+          <strong>Core idea:</strong> a <code>&lt;form&gt;</code> can call a <code>'use server'</code> function
+          directly. After mutating, call <code>revalidatePath('/route')</code> and the server-rendered list refreshes
+          itself — no client state, no manual re-fetch. <code>useActionState</code> is the opt-in for a pending flag +
+          error UI.
+        </div>
+        <p class="meta-line"><strong>Time:</strong> ~12 min · <strong>Maps to demo:</strong> <code>/guestbook</code>,
+          <code>/todos</code></p>
+
+        <h3>Task</h3>
+        <ol>
+          <li>Add a <strong>mutable in-memory store</strong> to your data module (e.g. an array) plus a function that
+            pushes a new item onto it. This is just plain TypeScript plumbing — a module-scope array and two helpers —
+            so here's a starting point. It is <em>not</em> the part you're practising (that's the Server Action below):
+            <pre class="snippet"><code>// src/lib/data.ts
+export type Entry = { id: string; name: string; message: string };
+
+// A module-scope array is a tiny in-memory "database". It persists across
+// requests while the dev server is running, and resets when it restarts.
+// (A real app would read/write an actual database in these two functions.)
+const entries: Entry[] = [];
+
+export function getEntries(): Entry[] {
+  return entries;
+}
+
+export function addEntry(name: string, message: string): void {
+  entries.unshift({ id: crypto.randomUUID(), name, message });
+}</code></pre>
+            <p class="snippet-note">That's the only code handed to you. The Server Component, the
+              <code>&lt;form&gt;</code>, and the <code>'use server'</code> action that calls <code>addEntry</code> +
+              <code>revalidatePath</code> are yours to write from the docs — that's the actual exercise.</p>
+          </li>
+          <li>Build a page at <code>/guestbook</code> (or <code>/todos</code>) that:
+            <ul>
+              <li>is a <strong>Server Component</strong> that reads and lists the store, and</li>
+              <li>has a <code>&lt;form&gt;</code> whose <code>action</code> is a <strong><code>'use server'</code>
+                  function</strong> that reads the submitted <code>FormData</code>, adds an item, and calls
+                <code>revalidatePath</code> so the list updates.</li>
+            </ul>
+          </li>
+          <li>Confirm the new item appears <strong>without you writing any re-fetch or client state</strong>.</li>
+        </ol>
+
+        <h3>How the parts fit together</h3>
+        <div class="mermaid compact">
+          %%{init: {'themeVariables': {'fontSize': '14px'}, 'flowchart': {'nodeSpacing': 28, 'rankSpacing': 30}}}%%
+          flowchart TD
+          classDef srv fill:#f0fdf4,stroke:#16a34a,color:#14532d
+          form["form action={signIt}<br />user submits"] -->|"POST"| action
+          action["action ('use server')<br />read FormData → validate"]:::srv -->|"addEntry()"| store["lib/data.ts<br />array store"]:::srv
+          action -->|"revalidatePath('/route')"| page["/guestbook page<br />Server Component"]:::srv
+          store -->|"read on re-render"| page
+          page -->|"new item on top"| ui["updated list<br />no client state"]
+        </div>
+        <p class="snippet-note">One round trip does both jobs: the action <em>mutates</em> the store, then
+          <code>revalidatePath</code> tells the Server Component to re-read and re-render. The store snippet is given;
+          the green boxes are yours to write.</p>
+
+        <h3>Hints (concept, not code)</h3>
+        <ul>
+          <li>The action lives in a file (or inline) marked <code>'use server'</code>. Its body <strong>only ever runs
+              on the server</strong>, even though the browser triggers it.</li>
+          <li>The form receives the standard browser <code>FormData</code> object — read fields off it by their input
+            <code>name</code>.</li>
+          <li>You wrote <strong>no</strong> <code>onSubmit</code>, <strong>no</strong> <code>fetch</code>,
+            <strong>no</strong> <code>event.preventDefault()</code>. Passing the server function to the form's
+            <code>action</code> prop is the whole wiring.</li>
+          <li>The list refreshes because <code>revalidatePath('/your-route')</code> tells Next to re-run the page's
+            Server Component, which re-reads the store.</li>
+          <li>Validate <strong>inside the action</strong> (server-side) — a user can't bypass it from the browser.</li>
+        </ul>
+
+        <div class="done-check">
+          <h3>Done-check</h3>
+          <ul>
+            <li>Submitting the form adds an item to the list with no page reload code you wrote.</li>
+            <li><strong>Disable JavaScript</strong> in DevTools and submit again — <strong>it still works</strong>
+              (progressive enhancement: it's a real <code>&lt;form&gt;</code> posting to a server action).</li>
+            <li>A bad input rejected by your server-side validation does <strong>not</strong> get added.</li>
+          </ul>
+        </div>
+
+        <div class="stretch">
+          <h3>Stretch (if fast)</h3>
+          <ul>
+            <li>Add a <strong>pending state + error message</strong> with <code>useActionState</code> in a small
+              <code>'use client'</code> form leaf — the button reads "Adding…" while in flight, and a returned error
+              renders inline. Keep only that form on the client; the page and list stay server-rendered.</li>
+            <li>Add a per-row toggle/delete as <strong>another tiny <code>&lt;form action={...}&gt;</code></strong> — no
+              <code>useState</code> for the checkbox.</li>
+          </ul>
+        </div>
+
+        <h3>Docs to refer</h3>
+        <ul class="docs">
+          <li><strong>Mutating Data</strong> (Server Actions, <code>&lt;form action={fn}&gt;</code>) — <a
+              target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/mutating-data">getting-started/mutating-data</a></li>
+          <li><strong><code>'use server'</code> directive</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/directives/use-server">directives/use-server</a></li>
+          <li><strong><code>revalidatePath</code></strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/functions/revalidatePath">functions/revalidatePath</a>
+          </li>
+          <li><strong>Forms guide</strong> — <a target="_blank" rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/guides/forms">guides/forms</a></li>
+          <li><em>Stretch:</em> <strong><code>useActionState</code></strong> — React docs: <a target="_blank"
+              rel="noopener noreferrer"
+              href="https://react.dev/reference/react/useActionState">react.dev/reference/react/useActionState</a></li>
+        </ul>
+      </section>
+
+      <!-- SESSION 4 -->
+      <section class="card" id="s4">
+        <h2><span class="session-tag">Session 4</span> Judgment: "spot it, then fix it"</h2>
+        <div class="core-idea">
+          <strong>Core idea:</strong> the framework will happily let you do the wrong thing. The single decision that
+          separates good Next.js from bad: <em>does this need state/events?</em> If no → Server Component. Push the
+          <code>'use client'</code> boundary down to the <strong>interactive leaf</strong>.
+        </div>
+        <p class="meta-line"><strong>Time:</strong> ~12 min · <strong>Maps to demo:</strong> <code>/anti-patterns</code>
+          → <code>/users-server</code></p>
+
+        <h3>Task (build-it-wrong, then fix-it)</h3>
+        <ol>
+          <li><strong>Build the anti-pattern on purpose.</strong> Make a page at <code>/anti-patterns</code> that shows
+            the <em>same</em> list as your <code>/users-server</code> page, but built the bad way: mark the
+            <strong>whole page</strong> <code>'use client'</code>, hold the data in <code>useState</code>, and load it
+            in a <code>useEffect</code> that fetches from a Route Handler. Add a loading skeleton for the
+            <code>null</code> state.</li>
+          <li><strong>Observe the cost.</strong> Load it and watch the <strong>spinner flash on every refresh</strong>.
+            Open the Network tab and see the extra client fetch.</li>
+          <li><strong>Refactor it to the right shape.</strong> Turn it back into an <code>async</code> Server Component
+            that <code>await</code>s the data inline — delete <code>'use client'</code>, delete the effect and state.
+            Compare the two.</li>
+        </ol>
+
+        <h3>How the parts fit together</h3>
+        <div class="mermaid compact">
+          %%{init: {'themeVariables': {'fontSize': '14px'}, 'flowchart': {'nodeSpacing': 28, 'rankSpacing': 30}}}%%
+          flowchart TD
+          classDef bad fill:#fef2f2,stroke:#dc2626,color:#7f1d1d
+          classDef good fill:#f0fdf4,stroke:#16a34a,color:#14532d
+          subgraph BAD["Step 1 — build it wrong"]
+          direction TB
+          b1["'use client' whole page"]:::bad --> b2["useEffect + fetch /api"]:::bad
+          b2 --> b3["useState data"]:::bad --> b4["spinner on every load"]:::bad
+          end
+          subgraph GOOD["Step 3 — refactor"]
+          direction TB
+          g1["async Server Component"]:::good --> g2["await data inline"]:::good
+          g2 --> g3["data in HTML, no spinner"]:::good
+          end
+          BAD -->|"delete 'use client' + effect,<br />add async / await"| GOOD
+        </div>
+        <p class="snippet-note">Same screen, two architectures. The exercise is feeling the difference — then making
+          the bad one into the good one with roughly one deletion and one keyword.</p>
+
+        <h3>Hints (concept, not code)</h3>
+        <ul>
+          <li>Before refactoring, ask the room's diagnostic question out loud: <em>"Is anything on this page
+              interactive?"</em> If the answer is no, <code>'use client'</code> at the top is the bug.</li>
+          <li><code>'use client'</code> is a <strong>boundary, not a free switch</strong> — everything the file imports
+            becomes client too, so a top-level directive drags the whole tree into the browser bundle.</li>
+          <li>The fix is famously small: roughly <strong>one deletion and one keyword</strong> (drop the directive, make
+            the function <code>async</code>, <code>await</code> the data).</li>
+        </ul>
+
+        <div class="done-check">
+          <h3>Done-check</h3>
+          <ul>
+            <li><strong>Before:</strong> <code>/anti-patterns</code> shows a spinner on refresh, and the Network tab
+              shows a browser fetch for the data.</li>
+            <li><strong>After:</strong> the refactored page has the list <strong>already in View Source</strong>, makes
+              <strong>no client fetch</strong>, and ships <strong>less JS</strong> (no effect/state code).</li>
+            <li>You can state the rule in one line: <em>do the work on the server; push the client boundary to the
+                leaves.</em></li>
+          </ul>
+        </div>
+
+        <div class="callout">
+          <strong>Discussion (no code — talk it through):</strong> <strong>When <em>not</em> to use Next.js</strong> — a
+          brochure/static site, a pure internal SPA with no SEO, or anywhere you can't run a Node server — simpler tools
+          win. Knowing when not to reach for it is itself a best practice.
+        </div>
+
+        <h3>Docs to refer</h3>
+        <ul class="docs">
+          <li><strong>Server and Client Components</strong> (re-read "when to use each") — <a target="_blank"
+              rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/getting-started/server-and-client-components">getting-started/server-and-client-components</a>
+          </li>
+          <li><strong><code>'use client'</code> directive</strong> (it's a <em>boundary</em>) — <a target="_blank"
+              rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/api-reference/directives/use-client">directives/use-client</a></li>
+          <li><strong>Rendering Philosophy</strong> (server-first as the default) — <a target="_blank"
+              rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/guides/rendering-philosophy">guides/rendering-philosophy</a></li>
+          <li><em>Discussion:</em> <strong>Single-Page Applications</strong> — <a target="_blank"
+              rel="noopener noreferrer"
+              href="https://nextjs.org/docs/app/guides/single-page-applications">guides/single-page-applications</a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- WRAP -->
+      <section class="card" id="wrap">
+        <h2>Trainer wrap-up</h2>
+        <p>By the end of four short builds, each trainee has — <strong>in their own repo, typed by hand</strong> — a
+          small app that:</p>
+        <ul>
+          <li><strong>routes</strong> (files → URLs, <code>await params</code>),</li>
+          <li><strong>reads</strong> on the server (async Server Component, no spinner),</li>
+          <li><strong>writes</strong> with a server action + <code>revalidatePath</code>, and</li>
+          <li>they can <strong>critique</strong> the difference between server-first and the whole-tree-client
+            anti-pattern.</li>
+        </ul>
+        <p>That's the entire mental model of modern Next.js, earned through practice rather than copied.</p>
+      </section>
+
+      <footer>Next.js 16 Training · 2026 — Hands-On Exercises (trainee handout)</footer>
+    </main>
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "default",
+      themeVariables: { fontSize: "19px" },
+      flowchart: { useMaxWidth: true, htmlLabels: true, nodeSpacing: 45, rankSpacing: 55, padding: 14 },
+    });
+  </script>
+</body>
+
+</html>
