@@ -39,6 +39,12 @@ const groups: NavGroup[] = [
       { href: "/todos", label: "Todos (useActionState)", idx: "13" },
     ],
   },
+  {
+    section: "Session 4 — Best Practices",
+    items: [
+      { href: "/anti-patterns", label: "Anti-patterns (bad)", idx: "14" },
+    ],
+  },
 ];
 
 export function SidebarNav() {

@@ -81,6 +81,15 @@ const session3Demos = [
   },
 ];
 
+const session4Demos = [
+  {
+    href: "/anti-patterns",
+    title: "Anti-patterns",
+    description:
+      "Deliberately bad: whole tree 'use client'. Spot what's wrong, then flip to /users-server.",
+  },
+];
+
 type Demo = { href: string; title: string; description: string };
 
 function DemoGrid({ demos }: { demos: Demo[] }) {
@@ -165,6 +174,18 @@ export default function Home() {
           <code className="icode">revalidatePath</code> refreshes the list.
         </p>
         <DemoGrid demos={session3Demos} />
+      </section>
+
+      <section className="pt-14">
+        <span className="sec-num">04 — Best practices</span>
+        <h2 className="sec-title">Session 4</h2>
+        <p className="mt-3 mb-6 max-w-xl text-sm text-ink-3">
+          Discussion-led. The one demo at{" "}
+          <code className="icode">src/app/anti-patterns/</code> is{" "}
+          <em>deliberately wrong</em> — diagnose it, then contrast with{" "}
+          <code className="icode">/users-server</code>.
+        </p>
+        <DemoGrid demos={session4Demos} />
       </section>
     </div>
   );
