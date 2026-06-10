@@ -15,8 +15,8 @@ todos:
     content: "DONE (local) — S2 (session-2-components): users-server, users-client, counter (client leaf), dashboard streaming, api/users route handler, if-time dashboard/granular + parallel-fetch, nav-hub section, teaching-scripts/session-2-components.md committed (42a9d4d); build + Biome green. NOT YET PUSHED to origin (git push -u origin session-2-components pending)."
     status: completed
   - id: s3
-    content: "S3 (session-3-actions): branch off session-2-components tip; build guestbook + todos with server actions, revalidatePath, useActionState; author teaching-scripts/session-3-actions.md on this branch; commit; push"
-    status: pending
+    content: "DONE — S3 (session-3-actions): guestbook + todos with server actions, revalidatePath, useActionState; teaching-scripts/session-3-actions.md committed (9d96dbe); branch pushed to origin/session-3-actions."
+    status: completed
   - id: s4
     content: "S4 (session-4-antipatterns): branch off session-3-actions tip; build /anti-patterns demo; author teaching-scripts/session-4-best-practices.md on this branch; commit; push"
     status: pending
