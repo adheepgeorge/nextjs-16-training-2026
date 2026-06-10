@@ -326,6 +326,11 @@
       max-width: 580px !important;
     }
 
+    /* S1 has 4 parallel file→URL pairs — full card width. */
+    #s1-diagram svg {
+      max-width: 100% !important;
+    }
+
     hr {
       border: none;
       border-top: 1px solid var(--line);
@@ -485,8 +490,8 @@
         </ol>
 
         <h3>How the parts fit together</h3>
-        <div class="mermaid compact">
-          %%{init: {'themeVariables': {'fontSize': '14px'}, 'flowchart': {'nodeSpacing': 28, 'rankSpacing': 30}}}%%
+        <div class="mermaid compact" id="s1-diagram">
+          %%{init: {'themeVariables': {'fontSize': '24px'}, 'flowchart': {'nodeSpacing': 60, 'rankSpacing': 64}}}%%
           flowchart TD
           classDef file fill:#eef2ff,stroke:#6366f1,color:#1e1b4b
           classDef url fill:#f0fdf4,stroke:#16a34a,color:#14532d
