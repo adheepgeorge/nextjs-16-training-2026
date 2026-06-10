@@ -18,8 +18,8 @@ todos:
     content: "DONE — S3 (session-3-actions): guestbook + todos with server actions, revalidatePath, useActionState; teaching-scripts/session-3-actions.md committed (9d96dbe); branch pushed to origin/session-3-actions."
     status: completed
   - id: s4
-    content: "S4 (session-4-antipatterns): branch off session-3-actions tip; build /anti-patterns demo; author teaching-scripts/session-4-best-practices.md on this branch; commit; push"
-    status: pending
+    content: "DONE (local) — S4 (session-4-antipatterns): /anti-patterns whole-tree 'use client' demo + nav-hub/sidebar wiring + teaching-scripts/session-4-best-practices.md committed (489d339); biome + build green. NOT YET PUSHED (git push -u origin session-4-antipatterns skipped by user)."
+    status: completed
   - id: merge-main
     content: "Merge session-4-antipatterns into main (brings all 4 teaching scripts along); then author + commit INSTRUCTOR.md (index linking the 4 scripts + branch map + timing table), CHEATSHEET.md, updated README.md on main; main = full course + companion docs"
     status: pending
