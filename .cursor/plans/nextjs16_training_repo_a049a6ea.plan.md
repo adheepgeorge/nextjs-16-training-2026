@@ -21,8 +21,8 @@ todos:
     content: "DONE (local) — S4 (session-4-antipatterns): /anti-patterns whole-tree 'use client' demo + nav-hub/sidebar wiring + teaching-scripts/session-4-best-practices.md committed (489d339); biome + build green. NOT YET PUSHED (git push -u origin session-4-antipatterns skipped by user)."
     status: completed
   - id: merge-main
-    content: "Merge session-4-antipatterns into main (brings all 4 teaching scripts along); then author + commit INSTRUCTOR.md (index linking the 4 scripts + branch map + timing table), CHEATSHEET.md, updated README.md on main; main = full course + companion docs"
-    status: pending
+    content: "DONE (local) — session-4-antipatterns fast-forward merged into main (7175c8c, all 4 teaching scripts present); authored + committed INSTRUCTOR.md, CHEATSHEET.md, rewritten README.md on main (de366fb). main = full course + companion docs. NOT YET PUSHED."
+    status: completed
   - id: qa-push
     content: "Final QA (build green, all routes, streaming, /api/users); push main + session-0-scaffold session-1-routing session-2-components session-3-actions session-4-antipatterns to origin"
     status: pending
