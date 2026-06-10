@@ -66,6 +66,21 @@ const session2Demos = [
   },
 ];
 
+const session3Demos = [
+  {
+    href: "/guestbook",
+    title: "Guestbook",
+    description:
+      "<form action={serverAction}> → append → revalidatePath. The simplest write.",
+  },
+  {
+    href: "/todos",
+    title: "Todos",
+    description:
+      "Add via useActionState (pending + error UI); toggle via form actions.",
+  },
+];
+
 type Demo = { href: string; title: string; description: string };
 
 function DemoGrid({ demos }: { demos: Demo[] }) {
@@ -139,6 +154,17 @@ export default function Home() {
           <code className="icode">/api/users</code> Route Handler.
         </p>
         <DemoGrid demos={session2Demos} />
+      </section>
+
+      <section className="pt-14">
+        <span className="sec-num">03 — Server actions &amp; mutations</span>
+        <h2 className="sec-title">Session 3</h2>
+        <p className="mt-3 mb-6 max-w-xl text-sm text-ink-3">
+          Routes live under <code className="icode">src/app/(s3-actions)/</code>
+          . Forms call <code className="icode">'use server'</code> actions, then{" "}
+          <code className="icode">revalidatePath</code> refreshes the list.
+        </p>
+        <DemoGrid demos={session3Demos} />
       </section>
     </div>
   );

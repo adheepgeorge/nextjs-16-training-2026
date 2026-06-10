@@ -32,6 +32,13 @@ const groups: NavGroup[] = [
       { href: "/parallel-fetch", label: "Parallel fetch", idx: "11" },
     ],
   },
+  {
+    section: "Session 3 — Server Actions",
+    items: [
+      { href: "/guestbook", label: "Guestbook (form action)", idx: "12" },
+      { href: "/todos", label: "Todos (useActionState)", idx: "13" },
+    ],
+  },
 ];
 
 export function SidebarNav() {

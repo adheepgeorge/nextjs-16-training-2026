@@ -17,6 +17,18 @@ export type Product = {
   price: number;
 };
 
+export type GuestbookEntry = {
+  id: string;
+  name: string;
+  message: string;
+};
+
+export type Todo = {
+  id: string;
+  text: string;
+  done: boolean;
+};
+
 const posts: Post[] = [
   {
     slug: "welcome-to-nextjs-16",
@@ -80,4 +92,45 @@ export async function getProducts(): Promise<Product[]> {
 export async function getSlowSummary(): Promise<string> {
   await delay(2000);
   return "This summary loaded slowly — perfect for demonstrating streaming in Session 2.";
+}
+
+// --- Session 3: mutable in-memory stores for Server Action demos ---
+// These live in module scope, so they persist across requests within a
+// single dev-server process (and reset on restart). Real apps would write
+// to a database here — the Server Action shape is identical.
+
+const guestbook: GuestbookEntry[] = [
+  {
+    id: "1",
+    name: "Ada Lovelace",
+    message: "First! Server Actions are lovely.",
+  },
+];
+
+const todos: Todo[] = [
+  { id: "1", text: "Learn Server Actions", done: true },
+  { id: "2", text: "Build a CRUD feature", done: false },
+];
+
+export async function getGuestbookEntries(): Promise<GuestbookEntry[]> {
+  await delay(300);
+  return guestbook;
+}
+
+export function addGuestbookEntry(name: string, message: string): void {
+  guestbook.unshift({ id: crypto.randomUUID(), name, message });
+}
+
+export async function getTodos(): Promise<Todo[]> {
+  await delay(300);
+  return todos;
+}
+
+export function addTodo(text: string): void {
+  todos.push({ id: crypto.randomUUID(), text, done: false });
+}
+
+export function toggleTodo(id: string): void {
+  const todo = todos.find((t) => t.id === id);
+  if (todo) todo.done = !todo.done;
 }
