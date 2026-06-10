@@ -5,6 +5,12 @@ in [`teaching-scripts/`](teaching-scripts/) (Say / Show / Ask cues, Mermaid
 diagrams, v16 gotchas, time budgets). This file is the map: timing, branch
 model, and how to drive the live demo.
 
+> **Hands-on:** every session ends with a tiny build-it-yourself task in
+> [`teaching-scripts/hands-on-exercises.md`](teaching-scripts/hands-on-exercises.md).
+> Trainees scaffold their **own** fresh Next.js 16 repo and grow it across all
+> four sessions. **No AI, no copy-paste in the room** — docs only (each exercise
+> links the exact pages). Answer code is for trainer verification, not hand-out.
+
 > **Stack:** Next.js 16.2.7 · React 19.2.4 · TypeScript · Tailwind CSS v4 · Biome · pnpm · Turbopack (default)
 > **Caching:** **Cache Components OFF** (the v16 default) — caching is a day-2 topic, mentioned only as a ~3-min concept in Session 4.
 > **Audience:** Freshers comfortable with React fundamentals (`useState`/`useEffect`, props) and ES6.
@@ -21,6 +27,16 @@ model, and how to drive the live demo.
 | 4 | Best Practices & Disadvantages | 30 | 11:45–12:15 | [session-4-best-practices.md](teaching-scripts/session-4-best-practices.md) | Diagnose `/anti-patterns`; caching = day-2; when *not* to use Next |
 
 **Teaching arc:** route (S1) → read (S2) → write (S3) → judge it (S4).
+
+**Per-session hands-on** (all in [`hands-on-exercises.md`](teaching-scripts/hands-on-exercises.md), ~8–12 min each):
+
+| # | Tiny build | Drills |
+|---|------------|--------|
+| 0 | Scaffold a fresh Next.js 16 app | `create-next-app`, Turbopack default, leave caching off |
+| 1 | `/about` + dynamic `/greet/[name]` + a `loading.tsx` | file → URL, `await params`, special files |
+| 2 | `/users-server` async component + a `/counter` client leaf | server-by-default, `'use client'` at the leaf |
+| 3 | A `<form action={serverAction}>` + `revalidatePath` | `'use server'`, mutate → revalidate, no client state |
+| 4 | Build the whole-tree `'use client'` anti-pattern, then refactor it | server-first; push the client boundary down |
 
 ---
 

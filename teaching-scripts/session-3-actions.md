@@ -34,6 +34,10 @@ Not built yet on `session-2-components`: everything under `src/app/(s3-actions)/
 
 ---
 
+> **Your turn (hands-on):** trainees wire a `<form action={serverAction}>` + `revalidatePath` in their own repo (stretch: `useActionState` for pending/error). See **Session 3** in [`hands-on-exercises.md`](hands-on-exercises.md) for the task + docs. **No AI / no copy-paste — docs only.**
+
+---
+
 ## Opening hook (~2 min)
 
 > "In Session 2 we got really good at **reading** data — async Server Components, no `useEffect`, no spinner. But a real app also has to **write**. In the React you knew yesterday, that meant: `useState`, an `onSubmit` handler, `fetch('/api/...', { method: 'POST' })`, then manually re-fetch the list. Today we do all of that with **one async function** and **zero** client code for the simple case."

@@ -34,6 +34,10 @@ Not built yet on `session-3-actions`: the single demo at `src/app/anti-patterns/
 
 ---
 
+> **Your turn (hands-on):** trainees build the whole-tree `'use client'` anti-pattern on purpose, then refactor it to an async Server Component in their own repo. See **Session 4** in [`hands-on-exercises.md`](hands-on-exercises.md) for the task + docs. **No AI / no copy-paste — docs only.**
+
+---
+
 ## Opening hook (~2 min)
 
 > "The last three sessions taught you the *moves* — routing, server components, streaming, actions. This session is about **taste**: looking at a piece of Next.js code and knowing whether it's good. The framework will happily let you do the wrong thing. So let's start with a page that *works* — it shows the right data — but is built badly. Your job is to tell me why."

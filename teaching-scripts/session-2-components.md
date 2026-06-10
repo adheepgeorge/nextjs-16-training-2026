@@ -39,6 +39,10 @@ Not built yet on `session-1-routing`: everything under `src/app/(s2-components)/
 
 ---
 
+> **Your turn (hands-on):** trainees build a `/users-server` async Server Component and a `/counter` with one `'use client'` leaf in their own repo. See **Session 2** in [`hands-on-exercises.md`](hands-on-exercises.md) for the task + docs. **No AI / no copy-paste — docs only.**
+
+---
+
 ## Opening hook (~2 min)
 
 > "Yesterday's tutorials told you to fetch data with `useEffect` and a loading spinner. In Next.js you mostly **don't**. A component can be `async` and `await` its data on the server — the browser receives finished HTML with zero fetching JavaScript. Today we'll build the *same* user list twice — once the server way, once the old client way — and feel the difference."

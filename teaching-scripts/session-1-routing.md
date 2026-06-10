@@ -39,6 +39,10 @@ Not built yet on `session-0-scaffold`: nav hub, `src/lib/data.ts`, and everythin
 
 ---
 
+> **Your turn (hands-on):** after this session, trainees build their own `/about`, a dynamic `/greet/[name]` (drilling `await params`), and a `loading.tsx` in a fresh repo. See **Session 1** in [`hands-on-exercises.md`](hands-on-exercises.md) for the task + docs. **No AI / no copy-paste — docs only.**
+
+---
+
 ## Opening hook (~2 min)
 
 > "In most frameworks you wire up a router: a config file that maps URLs to components. In Next.js, **there is no router config**. The folder structure *is* the router. If you can create a file in the right place, you've created a route. Let's prove it."
