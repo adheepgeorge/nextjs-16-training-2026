@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainer Fundamentals & Q&A — Next.js 16 Training 2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --indigo: #6366f1;
+      --indigo-dark: #1e1b4b;
+      --indigo-soft: #eef2ff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --green: #16a34a;
+      --green-soft: #f0fdf4;
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --code-bg: #0f172a;
+      --code-ink: #e2e8f0;
+      --purple: #7c3aed;
+      --purple-soft: #f5f3ff;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 19px;
+    }
+
+    .layout { display: flex; max-width: 1320px; margin: 0 auto; }
+
+    nav.toc {
+      position: sticky; top: 0; align-self: flex-start;
+      width: 270px; height: 100vh; overflow-y: auto;
+      padding: 28px 18px; border-right: 1px solid var(--line);
+      background: var(--card); flex-shrink: 0;
+    }
+    nav.toc h2 {
+      font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted); margin: 0 0 12px;
+    }
+    nav.toc a {
+      display: block; padding: 6px 12px; border-radius: 8px;
+      color: var(--ink); text-decoration: none; font-size: 15.5px;
+      margin-bottom: 1px; transition: background 0.15s, color 0.15s;
+    }
+    nav.toc a:hover { background: var(--indigo-soft); color: var(--indigo-dark); }
+    nav.toc a .num { display: inline-block; width: 26px; color: var(--indigo); font-weight: 700; }
+    nav.toc .group { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 16px 0 4px 12px; }
+
+    main { flex: 1; min-width: 0; padding: 40px 48px 96px; }
+
+    header.hero {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff; border-radius: 18px; padding: 38px 40px; margin-bottom: 30px;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.25);
+    }
+    header.hero h1 { margin: 0 0 10px; font-size: 38px; line-height: 1.2; }
+    header.hero p { margin: 0; font-size: 19px; opacity: 0.95; max-width: 74ch; }
+    .badges { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .badge {
+      background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 5px 12px; border-radius: 999px; font-size: 14px; font-weight: 600;
+    }
+
+    section.card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+      padding: 26px 32px; margin-bottom: 26px; scroll-margin-top: 20px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    section.card > h2 {
+      margin: 0 0 6px; font-size: 28px; color: var(--indigo-dark);
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    section.card > h2 .sec-num {
+      font-size: 16px; font-weight: 800; color: var(--indigo);
+      background: var(--indigo-soft); border-radius: 8px; padding: 2px 10px;
+    }
+
+    h3 {
+      margin: 26px 0 8px; font-size: 16px; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--muted);
+    }
+    h4 { margin: 18px 0 4px; font-size: 18px; color: var(--indigo-dark); }
+
+    .core-idea {
+      border-left: 4px solid var(--indigo); background: var(--indigo-soft);
+      padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 18px;
+    }
+    .core-idea strong { color: var(--indigo-dark); }
+
+    .philosophy {
+      border-left: 4px solid var(--purple); background: var(--purple-soft);
+      padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 17px;
+    }
+    .philosophy strong { color: var(--purple); }
+    .philosophy-label {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--purple); display: block; margin-bottom: 4px;
+    }
+
+    p.lead { font-size: 18px; color: var(--ink); }
+    ol, ul { padding-left: 22px; }
+    li { margin: 6px 0; }
+
+    code {
+      background: #f1f5f9; padding: 2px 6px; border-radius: 6px;
+      font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.86em; color: #be185d;
+    }
+    pre.snippet {
+      background: var(--code-bg); color: var(--code-ink); border-radius: 12px;
+      padding: 16px 18px; overflow-x: auto;
+      font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+      font-size: 15px; line-height: 1.6; margin: 12px 0 6px;
+    }
+    pre.snippet code { background: none; padding: 0; color: inherit; font-size: inherit; }
+    .snippet-note { font-size: 15px; color: var(--muted); margin: 0 0 6px; }
+
+    a { color: var(--indigo); }
+
+    table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 16px; }
+    th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
+    th { background: var(--indigo-soft); color: var(--indigo-dark); font-size: 14px; text-transform: uppercase; letter-spacing: 0.03em; }
+    td code { font-size: 0.85em; }
+
+    .callout {
+      border: 1px dashed var(--indigo); background: #fafaff; border-radius: 12px;
+      padding: 14px 20px; margin: 16px 0; font-size: 17px;
+    }
+    .good { background: var(--green-soft); border: 1px solid #bbf7d0; border-radius: 12px; padding: 14px 20px; margin: 14px 0; }
+    .good h4 { color: var(--green); margin-top: 0; }
+    .warn { background: var(--amber-soft); border: 1px solid #fde68a; border-radius: 12px; padding: 14px 20px; margin: 14px 0; }
+    .warn h4 { color: var(--amber); margin-top: 0; }
+    .danger { background: var(--red-soft); border: 1px solid #fecaca; border-radius: 12px; padding: 14px 20px; margin: 14px 0; }
+    .danger h4 { color: var(--red); margin-top: 0; }
+
+    /* Q&A */
+    details.qa {
+      border: 1px solid var(--line); border-radius: 12px; margin: 10px 0;
+      background: #fff; overflow: hidden;
+    }
+    details.qa[open] { box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-color: var(--indigo); }
+    details.qa > summary {
+      cursor: pointer; padding: 14px 18px; font-weight: 600; font-size: 17px;
+      color: var(--indigo-dark); list-style: none; display: flex; gap: 10px; align-items: baseline;
+    }
+    details.qa > summary::-webkit-details-marker { display: none; }
+    details.qa > summary::before { content: "Q"; color: var(--indigo); font-weight: 800; flex-shrink: 0; }
+    details.qa[open] > summary { background: var(--indigo-soft); }
+    .qa-body { padding: 6px 18px 16px 18px; font-size: 16.5px; }
+    .qa-body p:first-child { margin-top: 6px; }
+    .qa-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      background: var(--indigo-soft); color: var(--indigo); padding: 2px 8px; border-radius: 6px;
+      margin-left: auto; flex-shrink: 0; align-self: center;
+    }
+
+    .mermaid { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin: 16px 0; text-align: center; }
+
+    .src-list { font-size: 15px; }
+    .src-list li { margin: 8px 0; }
+    .src-list a { word-break: break-word; }
+
+    .kbd { font-size: 13px; background: #fff; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 1px 6px; color: var(--ink); }
+
+    hr.soft { border: none; border-top: 1px solid var(--line); margin: 26px 0; }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <nav class="toc">
+      <h2>Contents</h2>
+      <div class="group">Foundations</div>
+      <a href="#how-to-use"><span class="num">0</span>How to use this</a>
+      <a href="#react-vs-next"><span class="num">1</span>React vs Next.js &amp; SSR</a>
+      <a href="#mental-model"><span class="num">2</span>The one-line mental model</a>
+      <a href="#router"><span class="num">3</span>App Router: files = routes</a>
+      <a href="#server-client"><span class="num">4</span>Server vs Client Components</a>
+      <a href="#streaming"><span class="num">5</span>Rendering, Suspense &amp; streaming</a>
+      <a href="#data-read"><span class="num">6</span>Reading data + Route Handlers</a>
+      <a href="#data-write"><span class="num">7</span>Server Actions &amp; mutations</a>
+      <div class="group">v16 &amp; beyond</div>
+      <a href="#v16"><span class="num">8</span>What's new / breaking in v16</a>
+      <a href="#caching"><span class="num">9</span>Caching &amp; Cache Components</a>
+      <a href="#when-not"><span class="num">10</span>When NOT to use Next.js</a>
+      <div class="group">Teaching</div>
+      <a href="#qa"><span class="num">11</span>Probable trainee Q&amp;A</a>
+      <a href="#traps"><span class="num">12</span>Trainer traps &amp; repair lines</a>
+      <a href="#sources"><span class="num">13</span>Sources &amp; fact-check</a>
+    </nav>
+
+    <main>
+      <header class="hero">
+        <h1>Trainer Fundamentals &amp; Q&amp;A</h1>
+        <p>Everything you should own <em>cold</em> before running the four Next.js 16 sessions — the mental
+          models, the exact v16 APIs, and the questions trainees are most likely to throw at you, with
+          fact-checked answers.</p>
+        <div class="badges">
+          <span class="badge">Next.js 16 (App Router)</span>
+          <span class="badge">React 19.2</span>
+          <span class="badge">Turbopack default</span>
+          <span class="badge">Cache Components OFF</span>
+          <span class="badge">Fact-checked vs official docs</span>
+        </div>
+      </header>
+
+      <!-- 0 -->
+      <section class="card" id="how-to-use">
+        <h2><span class="sec-num">0</span>How to use this document</h2>
+        <p class="lead">This is a <strong>trainer's</strong> companion, not a slide deck. Sessions 1–4 each
+          have a script (<code>session-N-*.md</code>); this file is the <em>layer underneath</em> them — the
+          "why", the edge cases, and the answers to questions the scripts don't pre-empt.</p>
+        <ul>
+          <li><strong>Read sections 1–7</strong> end-to-end once; they are the concepts the whole course rests on.</li>
+          <li><strong>Skim section 8</strong> (v16 deltas) — this is what makes old tutorials and Stack Overflow answers wrong, and trainees <em>will</em> arrive with old habits.</li>
+          <li><strong>Section 11 is the payload:</strong> ~35 likely questions with answers you can give on the spot. Click any question to expand.</li>
+        </ul>
+        <div class="callout">
+          <strong>Course stance, repeated everywhere:</strong> do the work on the <strong>server</strong>,
+          push the <strong>client boundary down to the leaves</strong>, and treat <strong>caching as a
+          day-2 topic</strong> (Cache Components stays OFF all course). If you only remember one sentence,
+          remember that one.
+        </div>
+      </section>
+
+      <!-- 1 — NEW -->
+      <section class="card" id="react-vs-next">
+        <h2><span class="sec-num">1</span>React vs Next.js — and what is Server-Side Rendering?</h2>
+        <div class="core-idea">
+          <strong>React is a UI library.</strong> Next.js is a <em>full-stack framework</em> built on React.
+          The key difference: React renders in the browser; Next.js moves most of that work to the server
+          before the browser ever sees a byte.
+        </div>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy</span>
+          React answered "how do we build UIs?" — and stopped there by design. Next.js answers the follow-up:
+          "but where should those UIs run, how do they get data, and how do we route between them?" These are
+          framework concerns, not library concerns. Next.js uses React as its rendering engine and adds
+          everything around it.
+        </div>
+
+        <h3>React alone: the browser does everything (CSR)</h3>
+        <p>A plain React app (Vite, Create React App) ships the browser a near-empty HTML file plus a large
+          JavaScript bundle. The browser downloads the JS, parses it, runs it, and <em>then</em> your page
+          appears. During that gap the user sees a blank screen. This is <strong>Client-Side Rendering
+          (CSR)</strong>.</p>
+
+        <pre class="mermaid">
+sequenceDiagram
+  participant B as Browser
+  participant S as Static Server
+  B->>S: GET /dashboard
+  S-->>B: &lt;html&gt;&lt;div id="root"&gt;&lt;/div&gt; + big bundle.js
+  Note over B: blank screen while JS downloads &amp; parses
+  B->>B: React renders components
+  B->>B: useEffect fires → fetch /api/data
+  Note over B: spinner → data arrives → page visible ✓
+        </pre>
+        <p class="snippet-note">With CSR the HTML that arrives is empty. Crawlers and users see nothing until JavaScript has run — and data hasn't even loaded yet.</p>
+
+        <h3>Next.js: the server does the work first (SSR)</h3>
+        <p><strong>Server-Side Rendering</strong> means the server runs your components, fetches the data,
+          and generates complete HTML — <em>before</em> it responds. The browser receives a fully-populated
+          page on the very first byte. No spinner. No blank screen. Content is visible before a single line
+          of your JavaScript executes.</p>
+
+        <pre class="mermaid">
+sequenceDiagram
+  participant B as Browser
+  participant N as Next.js (Node.js server)
+  B->>N: GET /dashboard
+  N->>N: run Server Components,<br/>await DB / fetch
+  N-->>B: &lt;html&gt;...full rendered content...&lt;/html&gt;<br/>+ thin hydration JS
+  Note over B: page visible immediately ✓
+  B->>B: hydrate — attach event listeners<br/>(no repaint, no re-fetch)
+        </pre>
+        <p class="snippet-note">With SSR the HTML is fully populated on arrival. Hydration adds interactivity without repainting anything the user already sees.</p>
+
+        <h3>How Next.js achieves SSR — the mechanism</h3>
+        <p>The mechanism in the App Router is <strong>Server Components</strong>. Next.js runs these in
+          Node.js during the request. They can <code>await</code> databases, secrets, files — anything
+          server-side. They emit HTML and send <strong>zero</strong> component JavaScript to the browser.
+          <strong>Client Components</strong> (<code>'use client'</code>) are the thin interactive layer that
+          hydrates in the browser afterward.</p>
+
+        <pre class="mermaid">
+flowchart LR
+  subgraph server["Node.js (server — runs on every request)"]
+    sc["Server Components<br/>async functions, await DB<br/>no JS shipped to browser"]
+  end
+  subgraph browser["Browser"]
+    html["Full HTML<br/>visible immediately"]
+    cc["Client Components<br/>hydrate: useState, onClick"]
+  end
+  sc -->|"streams complete HTML"| html
+  html --> cc
+        </pre>
+
+        <h3>What Next.js adds on top of React</h3>
+        <table>
+          <thead><tr><th>Capability</th><th>Plain React (e.g. Vite)</th><th>Next.js 16</th></tr></thead>
+          <tbody>
+            <tr><td>Routing</td><td>Need react-router or similar</td><td>File-system router built in (<code>app/</code> folder)</td></tr>
+            <tr><td>Initial data loading</td><td><code>useEffect</code> + <code>fetch</code> in the browser</td><td><code>await</code> directly in a Server Component — zero client JS</td></tr>
+            <tr><td>Server-side rendering</td><td>Manual setup or a separate framework</td><td>Default — every page is server-rendered automatically</td></tr>
+            <tr><td>API endpoints</td><td>Separate server project or proxy</td><td><code>route.ts</code> files live in the same repo</td></tr>
+            <tr><td>Bundler / dev server</td><td>Configure Vite/Webpack yourself</td><td>Turbopack built in, zero config</td></tr>
+            <tr><td>SEO metadata</td><td><code>react-helmet</code> or manual</td><td><code>generateMetadata()</code> — co-located with the route</td></tr>
+            <tr><td>Streaming</td><td>Complex DIY with ReactDOM.renderToReadableStream</td><td>Automatic via Suspense + <code>loading.tsx</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>The short version for trainees:</strong> React is the engine; Next.js is the car. You still
+          write React components — but Next.js handles routing, rendering, data loading, and deployment, and
+          it moves work to the server wherever possible.
+        </div>
+
+        <div class="warn">
+          <h4>A common misconception</h4>
+          "SSR" in Next.js doesn't mean the server generates HTML once and caches it forever (that's Static
+          Site Generation, SSG). By default, App Router pages render fresh on every request — the server runs
+          your Server Components each time, so the data is always current. Caching is a separate opt-in
+          (day-2 topic).
+        </div>
+      </section>
+
+      <!-- 2 (was 1) -->
+      <section class="card" id="mental-model">
+        <h2><span class="sec-num">2</span>The one-line mental model</h2>
+        <div class="core-idea">
+          <strong>Route it (S1) → read it on the server (S2) → write it with an action and revalidate (S3) →
+          judge whether the code is good (S4).</strong> Everything else — auth, caching, fancy UI — is a layer
+          on top of that loop.
+        </div>
+        <pre class="mermaid">
+flowchart LR
+  s1["S1 — Route<br/>file = URL, layouts, &lt;Link&gt;"] --> s2["S2 — Read<br/>async Server Component<br/>+ Suspense"]
+  s2 --> s3["S3 — Write<br/>'use server' action<br/>+ revalidatePath"]
+  s3 --> s4["S4 — Judge<br/>server-first, small client,<br/>caching = day-2"]
+  classDef x fill:#eef2ff,stroke:#6366f1,color:#1e1b4b
+  class s1,s2,s3,s4 x
+        </pre>
+        <p>If a trainee ever looks lost, locate them on this loop: "We're in the <em>read</em> half — we'll
+          write data after the break."</p>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy</span>
+          This loop isn't specific to Next.js — it's the shape of every data-driven web app: declare
+          structure, read state, change state, reflect the change. Next.js 16 gives you a dedicated
+          primitive for each step. Anchoring trainees to this loop first means they always have a map, even
+          when the API details get confusing.
+        </div>
+      </section>
+
+      <!-- 3 (was 2) -->
+      <section class="card" id="router">
+        <h2><span class="sec-num">3</span>App Router: the folder structure <em>is</em> the router</h2>
+        <p class="lead">There is no router config file. A file's path under <code>src/app/</code> is its URL.
+          Special filenames add behavior with zero wiring.</p>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy — Convention over Configuration</span>
+          Every router you've ever configured has been a mapping from URL patterns to components. Next.js
+          makes that mapping structural — the file system already has a hierarchical path representation, so
+          it <em>becomes</em> the route tree. No config to sync, no typos to introduce, no indirection to
+          follow. When you see a folder, you see a URL. This is Rails-style convention applied to React.
+        </div>
+
+        <h3>The special files (own this table)</h3>
+        <table>
+          <thead><tr><th>File</th><th>Role</th><th>Server / Client</th></tr></thead>
+          <tbody>
+            <tr><td><code>page.tsx</code></td><td>Makes a route publicly reachable; renders the page UI.</td><td>Server by default</td></tr>
+            <tr><td><code>layout.tsx</code></td><td>Shared shell wrapping a folder <em>and all children</em>; stays mounted across navigation.</td><td>Server by default</td></tr>
+            <tr><td><code>loading.tsx</code></td><td>Instant fallback while the segment's data resolves — Next wraps the page in <code>&lt;Suspense&gt;</code> for you.</td><td>Server by default</td></tr>
+            <tr><td><code>error.tsx</code></td><td>Route-level error boundary; gets <code>error</code> + a retry callback.</td><td><strong>Must be Client</strong></td></tr>
+            <tr><td><code>not-found.tsx</code></td><td>Rendered when <code>notFound()</code> is thrown in the segment.</td><td>Server by default</td></tr>
+            <tr><td><code>route.ts</code></td><td>An HTTP endpoint (GET/POST/…) — the App Router's API route.</td><td>Server only</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Two folder-name conventions</h3>
+        <ul>
+          <li><code>(group)</code> — <strong>route group</strong>. Organizes files; <em>invisible in the URL</em>. <code>(s1-routing)/about/page.tsx</code> → <code>/about</code>.</li>
+          <li><code>[slug]</code> — <strong>dynamic segment</strong>. Captures the URL part as a param. <code>blog/[slug]/page.tsx</code> → <code>/blog/anything</code>.</li>
+        </ul>
+
+        <pre class="mermaid">
+flowchart TD
+  start["GET /blog/:slug"] --> await["await params → slug"]
+  await --> chk{"slug?"}
+  chk -->|"throws"| thr["throw Error"] --> errf["error.tsx (Client)"]
+  chk -->|"valid"| found{"post found?"}
+  chk -->|"unknown"| nf
+  found -->|yes| page["render article + generateMetadata title"]
+  found -->|no| call["notFound()"] --> nf["not-found.tsx"]
+        </pre>
+        <p class="snippet-note">One page file, three outcomes — each routes to its matching special file. This is "convention over config" in one picture.</p>
+
+        <h3>Layouts nest; only <code>{children}</code> swaps</h3>
+        <p>Navigating between sibling pages re-renders only the inner <code>{children}</code> region. Parent
+          layouts (and their state, scroll position, the sidebar) stay mounted — that's why there's no flicker.
+          The root <code>layout.tsx</code> is the only place <code>&lt;html&gt;</code> / <code>&lt;body&gt;</code> live.</p>
+
+        <div class="warn">
+          <h4>v16 headline you must drill</h4>
+          <code>params</code> and <code>searchParams</code> are <strong>Promises</strong> — you must
+          <code>await</code> them, in both the page and <code>generateMetadata</code>. Any tutorial doing
+          <code>params.slug</code> directly is pre-v15-style and will error in v16.
+        </div>
+      </section>
+
+      <!-- 4 (was 3) -->
+      <section class="card" id="server-client">
+        <h2><span class="sec-num">4</span>Server vs Client Components — the single most important idea</h2>
+        <div class="core-idea">
+          Components render on the <strong>server by default</strong>. <code>'use client'</code> opts a file
+          (and everything it imports) into the browser bundle. Reach for it <strong>only</strong> for
+          interactivity — state, effects, event handlers, browser APIs — and keep it at the <strong>leaves</strong>.
+        </div>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy — Server first, client at the edge</span>
+          The web's original model was server-rendered HTML. Single-page apps flipped that: move everything to
+          the client. React Server Components flip it back, but smarter: keep data access and static rendering
+          on the server (where it's safer, faster, and ships no JS), and move only the interactive bits to the
+          client. "Server by default" is not a performance trick — it's the correct default for most content,
+          which is not interactive. Client components are the exception, not the rule.
+        </div>
+
+        <h3>What each can and can't do</h3>
+        <table>
+          <thead><tr><th></th><th>Server Component (default)</th><th>Client Component (<code>'use client'</code>)</th></tr></thead>
+          <tbody>
+            <tr><td>Fetch data</td><td><code>await</code> directly inside the component; reads DB / secrets safely</td><td>Must fetch over HTTP (e.g. a Route Handler) from the browser</td></tr>
+            <tr><td><code>useState</code>/<code>useEffect</code>/<code>onClick</code></td><td>❌ not allowed</td><td>✅ this is the whole point</td></tr>
+            <tr><td>Browser APIs (<code>window</code>, <code>localStorage</code>)</td><td>❌ no browser</td><td>✅</td></tr>
+            <tr><td>Ships JS to the browser</td><td>No component JS — sends finished HTML</td><td>Yes — its code is in the client bundle</td></tr>
+            <tr><td><code>async</code> component</td><td>✅ <code>export default async function</code></td><td>❌ (use hooks / <code>use()</code> instead)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>The boundary rule that trips everyone up</h3>
+        <p><code>'use client'</code> is a <strong>boundary, not a per-component switch</strong>. Once a file is
+          marked, <em>all its imports and child components become client too</em>. That's exactly why a
+          top-of-tree <code>'use client'</code> drags the whole page into the browser — the Session 4
+          anti-pattern.</p>
+
+        <div class="good">
+          <h4>The correct shape</h4>
+          A Server Component <em>can</em> import and render a Client Component (great — server page, client
+          leaf). The reverse is restricted: a Client Component can't import a Server Component, but it
+          <em>can</em> receive one as a <code>children</code> prop (the "donut"/slot pattern).
+        </div>
+
+        <pre class="mermaid">
+flowchart TD
+  page["counter/page.tsx<br/>Server Component (no JS shipped)"] --> txt["heading + prose<br/>server-rendered"]
+  page --> leaf["&lt;Counter /&gt;<br/>'use client' leaf"]
+  leaf --> js["useState + onClick<br/>only THIS ships to browser"]
+        </pre>
+        <p class="snippet-note">Draw the boundary as low in the tree as you can. Everything above the leaf stays on the server.</p>
+      </section>
+
+      <!-- 5 (was 4) -->
+      <section class="card" id="streaming">
+        <h2><span class="sec-num">5</span>Rendering, Suspense &amp; streaming</h2>
+        <p class="lead">A slow <code>await</code> shouldn't mean a blank screen. Next streams the page:
+          shell first, slow regions fill in as their data resolves.</p>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy — Perceived speed matters more than actual speed</span>
+          Users judge performance by time-to-first-meaningful-content, not total load time. A page that shows
+          a header and sidebar in 100ms and fills in slow data at 2s feels faster than a page that shows
+          nothing for 2s then appears fully formed. Suspense + streaming is Next.js encoding that psychology
+          into the rendering model: send what you have now, stream the rest as it arrives.
+        </div>
+
+        <h3>Three levers, increasing granularity</h3>
+        <ol>
+          <li><strong><code>loading.tsx</code></strong> — name the file and Next auto-wraps the whole route in a <code>&lt;Suspense&gt;</code> boundary. Streams the page as one unit. Zero <code>isLoading</code> state.</li>
+          <li><strong>Explicit <code>&lt;Suspense fallback&gt;</code></strong> — wrap individual async sections so a fast card isn't blocked by a slow one. Each boundary resolves independently.</li>
+          <li><strong><code>Promise.all</code></strong> — for independent fetches <em>in the same component</em>, start them together to avoid a request waterfall.</li>
+        </ol>
+
+        <pre class="mermaid">
+sequenceDiagram
+  participant B as Browser
+  participant N as Next.js (server)
+  participant P as page.tsx
+  participant L as loading.tsx
+  B->>N: GET /dashboard
+  N->>L: render loading.tsx instantly
+  N-->>B: stream skeleton UI
+  N->>P: await getSlowSummary() (2s)
+  P-->>N: data ready
+  N-->>B: stream real content, swap out skeleton
+        </pre>
+        <p class="snippet-note"><code>loading.tsx</code> <em>is</em> Suspense with a default boundary. The trainee question "what is loading.tsx built on?" → React Suspense.</p>
+
+        <div class="callout">
+          <strong>Waterfall vs parallel.</strong> <code>const a = await x(); const b = await y();</code> runs
+          sequentially (waterfall). <code>const [a,b] = await Promise.all([x(),y()])</code> runs them together.
+          600ms + 1200ms becomes ~1.2s instead of ~1.8s.
+        </div>
+      </section>
+
+      <!-- 6 (was 5) -->
+      <section class="card" id="data-read">
+        <h2><span class="sec-num">6</span>Reading data + Route Handlers</h2>
+        <div class="core-idea">
+          The default way to read data is <strong>no special way at all</strong>: make the component
+          <code>async</code> and <code>await</code> your fetch/DB call inline. The browser receives finished
+          HTML and ships <em>zero</em> fetching JavaScript.
+        </div>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy — Eliminate the round trip</span>
+          The traditional SPA pattern for initial data is: server sends empty HTML → browser fetches bundle →
+          React renders skeleton → component effect fires → browser fetches data → component re-renders with
+          data. That is four network hops before the user sees anything real. A Server Component collapses all
+          of that into one: the server fetches data while building the HTML response, and the browser receives
+          finished content in the same request that served the page. Fewer hops, less JS, no secrets leaking
+          to the client.
+        </div>
+
+        <pre class="snippet"><code>// Server Component — runs on the server, never in the browser
+export default async function UsersPage() {
+  const users = await getUsers();      // DB / fetch / file — safe here
+  return &lt;ul&gt;{users.map(u =&gt; &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;)}&lt;/ul&gt;;
+}</code></pre>
+
+        <h3>When you genuinely need a browser fetch → Route Handler</h3>
+        <p>A Client Component can't import the server-only data functions. The bridge is a Route Handler —
+          <code>app/api/users/route.ts</code> exporting <code>GET</code>/<code>POST</code>/… and returning a
+          <code>Response</code>. That's the App Router's equivalent of an API route.</p>
+        <pre class="snippet"><code>// src/app/api/users/route.ts
+export async function GET() {
+  const users = await getUsers();
+  return Response.json(users);
+}</code></pre>
+
+        <pre class="mermaid">
+flowchart LR
+  subgraph server["Server"]
+    data["data.ts getUsers()"]
+    sc["/users-server<br/>async component"]
+    rh["/api/users<br/>route.ts GET"]
+  end
+  subgraph browser["Browser"]
+    cc["/users-client<br/>'use client' + useEffect"]
+  end
+  sc -->|"await, at render"| data
+  sc -->|"finished HTML"| browser
+  cc -->|"fetch() round-trip"| rh
+  rh --> data
+        </pre>
+        <p class="snippet-note">The server component reads <code>data.ts</code> directly while rendering. The client component must leave the browser, hit <code>/api/users</code>, and come back — that extra hop <em>is</em> the server/client divide.</p>
+      </section>
+
+      <!-- 7 (was 6) -->
+      <section class="card" id="data-write">
+        <h2><span class="sec-num">7</span>Server Actions &amp; mutations (the write half)</h2>
+        <div class="core-idea">
+          A <code>'use server'</code> function can be passed straight to <code>&lt;form action={fn}&gt;</code>.
+          It runs on the server, receives the <code>FormData</code>, mutates, then calls
+          <code>revalidatePath('/route')</code> to re-render the Server Component with fresh data. No
+          <code>onSubmit</code>, no <code>fetch</code>, no manual re-fetch.
+        </div>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy — Reclaim the native form</span>
+          HTML forms have submitted data to servers since 1993 — without JavaScript, without state management,
+          without a fetch call. Single-page apps abandoned this by wiring everything through JavaScript event
+          handlers and client-side fetch. Server Actions restore the original model: a real <code>&lt;form&gt;</code>
+          that posts directly to a server function. The server mutates, revalidates the affected route, and
+          the framework handles the UI update. The whole write cycle collapses to one function and one call to
+          <code>revalidatePath</code> — no Redux, no manual re-fetch, no optimistic update bookkeeping required
+          for the common case.
+        </div>
+
+        <h3>The simplest write</h3>
+        <pre class="snippet"><code>// actions.ts
+'use server';
+import { revalidatePath } from 'next/cache';
+
+export async function signGuestbook(formData: FormData) {
+  const name = String(formData.get('name') ?? '');
+  if (!name) return;                 // validation runs on the server
+  await addGuestbookEntry(name);
+  revalidatePath('/guestbook');      // re-render the list, no manual re-fetch
+}</code></pre>
+        <pre class="snippet"><code>// page.tsx (Server Component)
+&lt;form action={signGuestbook}&gt;
+  &lt;input name="name" /&gt;
+  &lt;button&gt;Sign&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+        <div class="good">
+          <h4>Progressive enhancement</h4>
+          Because this renders a real <code>&lt;form&gt;</code> posting to a server action, it <strong>works
+          with JavaScript disabled</strong>. JS is an enhancement, not a requirement. Great demo: turn off JS
+          in devtools and submit — it still works.
+        </div>
+
+        <h3>When you need pending / error UI → <code>useActionState</code></h3>
+        <p>The plain form gives no feedback. <code>useActionState</code> adds a pending flag and lets the
+          action return error state. The action signature changes: it takes
+          <strong><code>(previousState, formData)</code></strong> and <strong>returns the next state</strong>.</p>
+        <pre class="snippet"><code>// add-todo-form.tsx
+'use client';
+import { useActionState } from 'react';
+
+const [state, formAction, pending] = useActionState(addTodoAction, {});
+// &lt;form action={formAction}&gt; … &lt;button disabled={pending}&gt;{pending ? 'Adding…' : 'Add'}&lt;/button&gt;
+// {state.error &amp;&amp; &lt;p className="err"&gt;{state.error}&lt;/p&gt;}</code></pre>
+        <pre class="snippet"><code>// actions.ts
+'use server';
+export async function addTodoAction(prevState, formData) {
+  const text = String(formData.get('text') ?? '');
+  if (!text) return { error: 'Todo cannot be empty' };  // returned state
+  await addTodo(text);
+  revalidatePath('/todos');
+  return {};
+}</code></pre>
+
+        <div class="danger">
+          <h4>Say this out loud in S3</h4>
+          Server Actions are reachable by a <strong>direct POST</strong>, not just your form. A real app
+          <strong>must check auth/authorization inside every action</strong> — the demo skips it, but never
+          let trainees think the form is the security boundary.
+        </div>
+
+        <pre class="mermaid">
+flowchart TD
+  q{"Need pending flag<br/>or error UI?"} -->|no| plain["plain &lt;form action={fn}&gt;<br/>Server Component<br/>(guestbook, todo toggle)"]
+  q -->|yes| hook["'use client' leaf +<br/>useActionState(fn, init)<br/>(add-todo form)"]
+  plain --> rev["both: mutate → revalidatePath → list re-renders"]
+  hook --> rev
+        </pre>
+      </section>
+
+      <!-- 8 (was 7) -->
+      <section class="card" id="v16">
+        <h2><span class="sec-num">8</span>What's new / breaking in Next.js 16</h2>
+        <p class="lead">This is what makes most online tutorials subtly wrong. Trainees arrive with v13/14/15
+          habits — flag these proactively.</p>
+        <table>
+          <thead><tr><th>Change in v16</th><th>What it means for the course</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Async dynamic APIs are now required</strong></td><td><code>params</code>, <code>searchParams</code>, <code>cookies()</code>, <code>headers()</code>, <code>draftMode()</code> are Promises — <code>await</code> them. In v15 the sync form warned; in v16 it's <strong>removed</strong>.</td></tr>
+            <tr><td><strong>Turbopack is the default bundler</strong></td><td>Default for both <code>next dev</code> and <code>next build</code>. No <code>--turbopack</code> flag. To fall back: <code>next dev --webpack</code>.</td></tr>
+            <tr><td><strong><code>middleware.ts</code> → <code>proxy.ts</code></strong></td><td>Renamed to clarify it's a network-boundary proxy. (Runs on the <code>nodejs</code> runtime — the <code>edge</code> runtime is <em>not</em> supported in <code>proxy</code>; keep <code>middleware</code> if you need edge. Not used in this course, but trainees may ask.)</td></tr>
+            <tr><td><strong>Minimum Node.js 20.9.0</strong></td><td>Older Node won't run v16. React is <strong>19.2</strong> (React canary, built into the App Router).</td></tr>
+            <tr><td><strong>Cache Components OFF by default</strong></td><td>The reason async data fetching "just works" with no PPR/caching build error. This repo keeps it off all course.</td></tr>
+            <tr><td><strong><code>revalidateTag</code> got a 2-arg signature</strong></td><td><code>revalidateTag(tag, profile)</code> — old 1-arg form is deprecated. <em>But</em> <code>revalidatePath('/x')</code> (what the course uses) is <strong>unchanged</strong>.</td></tr>
+            <tr><td><strong><code>next build</code> output trimmed</strong></td><td>"Size" and "First Load JS" columns removed — they were misleading under RSC. Don't promise trainees those numbers.</td></tr>
+          </tbody>
+        </table>
+        <div class="warn">
+          <h4>About <code>error.tsx</code> — be precise</h4>
+          The boundary must be a Client Component and receives <code>error</code>. v16 (16.2) adds
+          <code>unstable_retry()</code> — it <em>re-fetches and re-renders</em> the boundary's children, and
+          is now the recommended recovery. The classic <code>reset()</code> still exists but only clears the
+          render-error state without re-fetching — so it won't recover a Server Component / data error. The
+          session script uses <code>reset()</code>, which is fine for the demo (the page throws during render);
+          just know the distinction if asked.
+        </div>
+      </section>
+
+      <!-- 9 (was 8) -->
+      <section class="card" id="caching">
+        <h2><span class="sec-num">9</span>Caching &amp; Cache Components — the day-2 concept</h2>
+        <p class="lead">You teach this as an <em>idea</em>, not an API. Three minutes, no drilling.</p>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy — Correctness before speed</span>
+          Caching is the single most powerful performance lever Next.js offers, and the single most common
+          source of subtle bugs (stale data, build errors, cache misses). Teaching it on day one alongside
+          routing and server components overloads trainees and trains them to reach for caching before they
+          understand when they need it. The correct order: understand the rendering model → understand mutations
+          → then add caching as a targeted optimization. Cache Components OFF is not a limitation of this
+          course; it is the pedagogically correct baseline.
+        </div>
+
+        <ul>
+          <li>Next.js can cache parts of a page and even pre-render them at build time.</li>
+          <li>v16's model is <strong>Cache Components</strong> — the <code>'use cache'</code> directive plus
+            Partial Pre-Rendering (PPR). It's opt-in via <code>cacheComponents: true</code> in
+            <code>next.config.ts</code>.</li>
+          <li>It's the single trickiest part of the framework — which is exactly why this repo keeps it
+            <strong>OFF</strong>. With it off, a component reading runtime data simply renders per request,
+            no build error.</li>
+          <li><code>revalidatePath</code> / <code>revalidateTag</code> are the simple, model-agnostic refresh
+            and work fine with Cache Components off — no <code>'use cache'</code> needed.</li>
+        </ul>
+        <div class="danger">
+          <h4>Do NOT turn it on</h4>
+          The repo's <code>AGENTS.md</code> forbids adding <code>cacheComponents</code> to the config. Turning
+          it on introduces "uncached data outside Suspense" build errors that derail every demo. Caching is a
+          later course.
+        </div>
+      </section>
+
+      <!-- 10 (was 9) -->
+      <section class="card" id="when-not">
+        <h2><span class="sec-num">10</span>When NOT to use Next.js</h2>
+        <p>Knowing when to reach for something simpler is itself a best practice — present it as a decision,
+          not a sales pitch.</p>
+
+        <div class="philosophy">
+          <span class="philosophy-label">Philosophy — Right tool, right job</span>
+          Next.js is a powerful framework. Power has cost: a Node.js runtime requirement, Turbopack as a
+          build dependency, a React rendering model that distinguishes server from client. For a landing page
+          or a purely internal admin tool that will never be crawled, that cost buys nothing. A good engineer
+          reaches for the simplest tool that meets the requirements, not the most impressive one.
+        </div>
+
+        <pre class="mermaid">
+flowchart TD
+  start{"What are you building?"}
+  start -->|"Simple static/content site,<br/>little interactivity"| astro["Plain HTML / Astro<br/>(Next is overkill)"]
+  start -->|"Internal SPA-only tool,<br/>no SEO, no server render"| vite["Vite + React<br/>(simpler, lighter)"]
+  start -->|"Can't run Node /<br/>no serverless host"| recon["Reconsider —<br/>Next wants a JS server"]
+  start -->|"SEO + interactivity +<br/>server data, one app"| next["Next.js ✅"]
+  classDef no fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+  classDef yes fill:#dcfce7,stroke:#16a34a,color:#14532d
+  class astro,vite,recon no
+  class next yes
+        </pre>
+        <p class="snippet-note">Next.js shines when you need server-rendered HTML <em>and</em> rich interactivity in one app: e-commerce, auth'd dashboards, content/marketing sites.</p>
+      </section>
+
+      <!-- 11 QA (was 10) -->
+      <section class="card" id="qa">
+        <h2><span class="sec-num">11</span>Probable trainee Q&amp;A</h2>
+        <p class="lead">Click to expand. Grouped by theme; answers are fact-checked against the official v16
+          docs (see §13). Phrasing is what you can say in the room.</p>
+
+        <h3>React vs Next.js &amp; SSR</h3>
+
+        <details class="qa"><summary>Why do I need Next.js if React already renders components?</summary>
+          <div class="qa-body"><p>React is a UI library — it renders components, nothing more. You still need something to handle routing, bundling, server-side rendering, and API endpoints. You can wire all that up yourself (Vite + react-router + an Express server + your own SSR setup), or you can use Next.js, which does it all with zero configuration. Next.js is the framework around React.</p></div>
+        </details>
+
+        <details class="qa"><summary>What exactly is "server-side rendering" — what does the server actually do?</summary>
+          <div class="qa-body"><p>The server runs your React components as Node.js functions. They can <code>await</code> databases and APIs, then return JSX. Next.js renders that JSX to HTML strings and sends them to the browser in the HTTP response — fully populated, no JavaScript needed to see the content. The browser then hydrates (attaches event listeners) to make interactive parts work.</p></div>
+        </details>
+
+        <details class="qa"><summary>What is hydration?</summary>
+          <div class="qa-body"><p>The browser receives pre-rendered HTML from the server — it looks right, but event handlers aren't attached yet. Hydration is the step where React on the browser side "takes over" the existing HTML: it attaches <code>onClick</code>, <code>onChange</code>, and other event handlers without repainting anything. The page was already visible; hydration just makes it interactive. Only Client Components hydrate — Server Components never run in the browser at all.</p></div>
+        </details>
+
+        <details class="qa"><summary>Is SSR the same as SSG (Static Site Generation)?</summary>
+          <div class="qa-body"><p>No. SSR renders on every request — fresh data every time. SSG renders at build time — the HTML is generated once and reused for every visitor until the next build. Next.js supports both; in the App Router with Cache Components OFF (our course default), pages are SSR by default. SSG is achieved by turning on caching — a day-2 topic.</p></div>
+        </details>
+
+        <h3>Routing &amp; the App Router</h3>
+
+        <details class="qa"><summary>Why do I have to <code>await params</code> now? It used to be a plain object. <span class="qa-tag">v16</span></summary>
+          <div class="qa-body"><p>In v16 <code>params</code> and <code>searchParams</code> are Promises. Awaiting them lets Next start rendering the rest of the page before those values are resolved, which supports streaming and the new caching model. In v15 the sync form still worked with a warning; in v16 it's removed. Old tutorials doing <code>params.slug</code> directly will error.</p></div>
+        </details>
+
+        <details class="qa"><summary>What's the difference between a route group <code>(x)</code> and a normal folder?</summary>
+          <div class="qa-body"><p>A normal folder name becomes a URL segment. A folder wrapped in parentheses — <code>(s1-routing)</code> — is a <em>route group</em>: it organizes files and can scope a layout, but it <strong>disappears from the URL</strong>. So <code>(s1-routing)/about/page.tsx</code> is just <code>/about</code>.</p></div>
+        </details>
+
+        <details class="qa"><summary>Why <code>&lt;Link&gt;</code> instead of a plain <code>&lt;a&gt;</code>?</summary>
+          <div class="qa-body"><p><code>&lt;Link&gt;</code> does client-side navigation — no full page reload — and <strong>prefetches</strong> the linked route automatically (in production; not in dev). The payload depends on <code>loading.tsx</code>: routes <em>without</em> one prefetch the whole page; routes <em>with</em> one prefetch from the layout up to the first loading boundary. A plain <code>&lt;a&gt;</code> is a full document navigation and loses all of that. Use <code>prefetch={false}</code> to opt out.</p></div>
+        </details>
+
+        <details class="qa"><summary>Do I have to import a layout into my page?</summary>
+          <div class="qa-body"><p>No — layouts apply <em>by position in the tree</em>. A <code>layout.tsx</code> automatically wraps every <code>page.tsx</code> in its folder and all child folders. The page never imports it. Nesting is automatic too: root layout → section layout → page.</p></div>
+        </details>
+
+        <details class="qa"><summary>When does <code>not-found.tsx</code> vs <code>error.tsx</code> show?</summary>
+          <div class="qa-body"><p><code>not-found.tsx</code> renders when you call <code>notFound()</code> (a deliberate "this resource doesn't exist" signal — typically a 404). <code>error.tsx</code> renders when the segment <em>throws</em> an unexpected error — it's a React error boundary with a retry. Different intents: "expected absence" vs "something broke."</p></div>
+        </details>
+
+        <details class="qa"><summary>Why must <code>error.tsx</code> be a Client Component? <span class="qa-tag">gotcha</span></summary>
+          <div class="qa-body"><p>It's a React error boundary, and it needs an interactive retry callback (a function prop you wire to an <code>onClick</code>). Interactivity requires the browser, so it must be <code>'use client'</code>. In v16 (16.2) the recommended recovery is <code>unstable_retry()</code> (re-fetches and re-renders the boundary's children); the older <code>reset()</code> only clears the render-error state without re-fetching.</p></div>
+        </details>
+
+        <h3>Server vs Client Components</h3>
+
+        <details class="qa"><summary>How do I decide: Server Component or Client Component? <span class="qa-tag">core</span></summary>
+          <div class="qa-body"><p>Ask one question: <em>does this component need state, effects, event handlers, or browser APIs?</em> If no → Server Component (the default) — fetch data inline, ship HTML. If yes → <code>'use client'</code>, but keep it as a small leaf. Default to server; opt into client only where you truly need it.</p></div>
+        </details>
+
+        <details class="qa"><summary>Why can't I use <code>useState</code>/<code>useEffect</code> in a Server Component?</summary>
+          <div class="qa-body"><p>Server Components render once on the server and never run in the browser, so there's no component lifecycle, no re-render, no DOM — the things hooks rely on. State and effects are inherently client concepts. The moment you need them, that file (a leaf) becomes <code>'use client'</code>.</p></div>
+        </details>
+
+        <details class="qa"><summary>If I put <code>'use client'</code> at the top of my page, what actually happens?</summary>
+          <div class="qa-body"><p>You move a <strong>boundary</strong>, not flip a switch. Everything that file imports — and all its children — becomes part of the client bundle and runs in the browser. So a top-of-tree <code>'use client'</code> drags the whole page client-side: more JS, hydration, and (if you fetch in <code>useEffect</code>) a spinner. That's exactly the Session 4 anti-pattern.</p></div>
+        </details>
+
+        <details class="qa"><summary>Can a Server Component render a Client Component, and vice versa?</summary>
+          <div class="qa-body"><p>A Server Component can import and render a Client Component freely — that's the normal "server page, client leaf" shape. A Client Component <strong>can't import</strong> a Server Component, but it <em>can</em> receive one through <code>children</code> (or any prop) — the "slot"/donut pattern: <code>&lt;ClientWrapper&gt;&lt;ServerThing/&gt;&lt;/ClientWrapper&gt;</code> composed in a server parent.</p></div>
+        </details>
+
+        <details class="qa"><summary>Can I pass a function as a prop from a Server to a Client Component?</summary>
+          <div class="qa-body"><p>Not an arbitrary function — props crossing the boundary must be serializable (they're sent as data). The exception is a <strong>Server Action</strong> (a <code>'use server'</code> function), which <em>is</em> passable because Next turns it into a callable reference. Plain callbacks belong inside the client side.</p></div>
+        </details>
+
+        <details class="qa"><summary>Can I still use Redux / Context / React Query?</summary>
+          <div class="qa-body"><p>Yes, but inside the client boundary. Context providers and client state libraries live in <code>'use client'</code> components (often a provider near the root of the client tree). For server data you usually don't need React Query at all — you <code>await</code> in a Server Component. Mix them: server for data, client libs for genuinely client-side state.</p></div>
+        </details>
+
+        <h3>Data fetching &amp; streaming</h3>
+
+        <details class="qa"><summary>Where does the <code>fetch</code> in a Server Component actually run?</summary>
+          <div class="qa-body"><p>On the server, during render — never in the browser. View source and the data is already in the HTML; the Network tab shows no client-side <code>/api</code> call. That means DB queries, secrets, and credentials stay server-side and never reach the client.</p></div>
+        </details>
+
+        <details class="qa"><summary>Is it safe to query the database or use an API key directly in a component?</summary>
+          <div class="qa-body"><p>In a <em>Server</em> Component, yes — that code only runs on the server and is never sent to the browser. That's a core benefit. The danger is doing it in a <code>'use client'</code> file, where the code ships to the browser. Keep secret-touching code server-side (Server Components, Route Handlers, Server Actions).</p></div>
+        </details>
+
+        <details class="qa"><summary>What is <code>loading.tsx</code> built on? Is it the same as Suspense?</summary>
+          <div class="qa-body"><p>It <em>is</em> Suspense. Naming a file <code>loading.tsx</code> tells Next to automatically wrap that route's <code>page.tsx</code> (and children) in a <code>&lt;Suspense&gt;</code> boundary, using your file as the fallback. For finer control you drop explicit <code>&lt;Suspense fallback&gt;</code> around individual sections instead.</p></div>
+        </details>
+
+        <details class="qa"><summary><code>loading.tsx</code> vs an explicit <code>&lt;Suspense&gt;</code> — when do I use which?</summary>
+          <div class="qa-body"><p><code>loading.tsx</code> streams the <em>whole route</em> as one unit — one fallback for the page. Use explicit <code>&lt;Suspense&gt;</code> when you want sections to appear independently: a fast card shows while a slow card still streams. Same primitive, different granularity.</p></div>
+        </details>
+
+        <details class="qa"><summary>Why did my two awaits make the page slow? (waterfall)</summary>
+          <div class="qa-body"><p>Sequential <code>await</code>s run one after another — the second request waits for the first. If the two fetches don't depend on each other, start them together with <code>const [a, b] = await Promise.all([x(), y()])</code>. 600ms + 1200ms then takes ~1.2s instead of ~1.8s.</p></div>
+        </details>
+
+        <details class="qa"><summary>How does Next decide what to send first when streaming?</summary>
+          <div class="qa-body"><p>It sends the static shell (and any already-resolved content) immediately, then streams each Suspense boundary's content as that boundary's <code>await</code> resolves. The user sees structure right away; slow regions swap in their real content as they finish — no blank screen, no blocking on the slowest piece.</p></div>
+        </details>
+
+        <details class="qa"><summary>Is server-rendered HTML good for SEO?</summary>
+          <div class="qa-body"><p>Yes — that's a key reason to use Next. Crawlers get fully-rendered HTML with the content already present, plus per-page <code>&lt;title&gt;</code>/meta from <code>generateMetadata</code>. The <code>useEffect</code>-fetch anti-pattern ships an empty shell first, which is worse for SEO and perceived speed.</p></div>
+        </details>
+
+        <h3>Server Actions &amp; mutations</h3>
+
+        <details class="qa"><summary>What's the difference between <code>'use client'</code> and <code>'use server'</code>? <span class="qa-tag">core</span></summary>
+          <div class="qa-body"><p>They're opposite directives. <code>'use client'</code> marks a <em>component</em> boundary — "this and its imports run in the browser." <code>'use server'</code> marks <em>functions</em> as Server Actions — "this is callable from the client but its body only ever executes on the server." One is about where components run; the other is about exposing a server function to the client.</p></div>
+        </details>
+
+        <details class="qa"><summary>After I POST a change, how does the list on screen update without me re-fetching?</summary>
+          <div class="qa-body"><p><code>revalidatePath('/route')</code>. After the action mutates the data, that call tells Next to re-run the route's Server Component, which re-reads the store and streams fresh HTML back. One round trip does both the write and the UI refresh — no manual <code>setState</code>, no client re-fetch.</p></div>
+        </details>
+
+        <details class="qa"><summary><code>revalidatePath</code> vs <code>revalidateTag</code>? <span class="qa-tag">v16</span></summary>
+          <div class="qa-body"><p><code>revalidatePath('/route')</code> invalidates a specific path. <code>revalidateTag('tag', profile)</code> invalidates everything tagged with that tag across the app — note v16's <strong>new second argument</strong> (a profile, e.g. <code>'max'</code>); the old single-arg form is deprecated. For this course we use <code>revalidatePath</code>, whose signature didn't change. Tags matter mainly once you're caching.</p></div>
+        </details>
+
+        <details class="qa"><summary>Does the whole page re-render on <code>revalidatePath</code>, or just the data?</summary>
+          <div class="qa-body"><p>Next re-renders the affected route's Server Components on the server and streams the updated HTML; on the client it reconciles, so layouts and client state that aren't part of the changed tree are preserved. You don't re-download the whole document — it's a targeted server re-render, not a full page reload.</p></div>
+        </details>
+
+        <details class="qa"><summary>Do Server Actions really work without JavaScript?</summary>
+          <div class="qa-body"><p>For the plain <code>&lt;form action={serverFn}&gt;</code> case, yes — it renders a real HTML form that posts to the action, so the browser's native submit carries it even with JS disabled. That's progressive enhancement. The moment you add <code>useActionState</code> for live pending/error UI, that feedback needs JS, but the underlying submit still degrades gracefully.</p></div>
+        </details>
+
+        <details class="qa"><summary>Are Server Actions secure? Can someone call them directly?</summary>
+          <div class="qa-body"><p>Treat them like any public POST endpoint — they <em>can</em> be invoked directly, not just from your form. Next adds protections (e.g. action IDs, same-origin checks), but <strong>you</strong> must do auth and authorization checks <em>inside every action</em>. The form is not a security boundary. The demo skips auth for brevity; a real action checks the session first.</p></div>
+        </details>
+
+        <details class="qa"><summary>What's the <code>useActionState</code> signature again?</summary>
+          <div class="qa-body"><p>Hook: <code>const [state, formAction, isPending] = useActionState(action, initialState)</code>. The action it wraps takes <strong><code>(previousState, formData)</code></strong> and <strong>returns the next state</strong>. You wire <code>action={formAction}</code> on the form, read <code>isPending</code> for the button, and render errors from the returned <code>state</code>.</p></div>
+        </details>
+
+        <details class="qa"><summary>Why is the add-todo form a Client Component but the toggle forms aren't?</summary>
+          <div class="qa-body"><p>Only the add form needs the <code>useActionState</code> hook (pending flag + error message), and hooks require <code>'use client'</code>. The toggle is a plain <code>&lt;form action={fn}&gt;</code> with no client feedback, so it stays a server-rendered form. Default to the plain form; reach for the client leaf only where you need live feedback.</p></div>
+        </details>
+
+        <details class="qa"><summary>Do I still need <code>/api</code> routes if I have Server Actions?</summary>
+          <div class="qa-body"><p>For form-driven mutations from your own UI, Server Actions usually replace hand-rolled POST endpoints. You still want Route Handlers (<code>route.ts</code>) for things that need a real HTTP endpoint: webhooks, third-party callbacks, public/mobile APIs, or fetching from a Client Component that isn't a form.</p></div>
+        </details>
+
+        <h3>v16, tooling &amp; "why is my old code wrong"</h3>
+
+        <details class="qa"><summary>What is Turbopack and do I need the <code>--turbopack</code> flag? <span class="qa-tag">v16</span></summary>
+          <div class="qa-body"><p>Turbopack is Next's Rust-based bundler, now stable and the <strong>default</strong> for both <code>dev</code> and <code>build</code> in v16 — no flag needed. If you copied <code>next dev --turbopack</code> from an old guide, drop the flag. To fall back to Webpack you'd explicitly pass <code>--webpack</code>.</p></div>
+        </details>
+
+        <details class="qa"><summary>My tutorial uses <code>middleware.ts</code> — is that gone? <span class="qa-tag">v16</span></summary>
+          <div class="qa-body"><p>It was renamed to <code>proxy.ts</code> in v16 to make clear it runs at the network/edge boundary, not as in-app middleware. Same idea, new name. We don't use it in this course, but that's the answer if someone's old project breaks on upgrade.</p></div>
+        </details>
+
+        <details class="qa"><summary>Why is <code>cookies()</code> / <code>headers()</code> returning a Promise? <span class="qa-tag">v16</span></summary>
+          <div class="qa-body"><p>In v16 these dynamic APIs are async-only — <code>await cookies()</code>, <code>await headers()</code>, <code>await draftMode()</code>. The synchronous versions were removed (they warned in v15). Same reasoning as <code>await params</code>: it unlocks streaming and the new rendering model.</p></div>
+        </details>
+
+        <details class="qa"><summary>What React version is this, and do I install it separately?</summary>
+          <div class="qa-body"><p>v16's App Router ships on React 19.2 (a React canary built into the framework), so you get React 19 features like the new form/action hooks and View Transitions. You declare React in <code>package.json</code> for type compatibility, but the framework bundles what it needs.</p></div>
+        </details>
+
+        <details class="qa"><summary>Why is Cache Components off? Isn't caching the whole point of Next? <span class="qa-tag">course</span></summary>
+          <div class="qa-body"><p>Caching is powerful but it's the trickiest part of the framework, and turning it on forces you to reason about "uncached data outside Suspense" build errors on day one. Off (the v16 default) means async data fetching just works, so we can teach routing, server components, and actions cleanly. Caching is a deliberate day-2 topic.</p></div>
+        </details>
+
+        <details class="qa"><summary>This is a server component — how do I add a click handler / use <code>window</code>?</summary>
+          <div class="qa-body"><p>You can't, in that file. Extract the interactive bit into a small child component, put <code>'use client'</code> at the top of <em>that</em> file, and render it from the server component. Keep the boundary as low as possible so only the interactive leaf ships JS.</p></div>
+        </details>
+
+        <h3>Architecture &amp; judgment (Session 4)</h3>
+
+        <details class="qa"><summary>What's actually wrong with the anti-patterns page? It works fine.</summary>
+          <div class="qa-body"><p>It produces the right screen the wrong way: <code>'use client'</code> at the top (nothing is interactive), <code>useEffect</code> + <code>fetch</code> to read data the server already had, and an extra hop to <code>/api/users</code>. Result: more JS, hydration, and a spinner on every load. The fix is one deletion (<code>'use client'</code>) and one keyword (<code>async</code>) — it becomes the server version.</p></div>
+        </details>
+
+        <details class="qa"><summary>So is <code>useEffect</code>-to-fetch always wrong?</summary>
+          <div class="qa-body"><p>Not always — it's right for genuinely client-side, post-interaction data (e.g. data that depends on browser state or live user input). It's wrong as the <em>default</em> way to load a page's initial data, because a Server Component does that in one line with no spinner and less JS. The anti-pattern is using the client tool for a server job.</p></div>
+        </details>
+
+        <details class="qa"><summary>Where exactly should the client boundary go?</summary>
+          <div class="qa-body"><p>At the lowest component that truly needs interactivity — the button, the input, the form with feedback. Everything above it stays a Server Component. "Server by default, client at the leaves" is the single decision that separates good Next.js from bad.</p></div>
+        </details>
+
+        <details class="qa"><summary>When would you NOT use Next.js?</summary>
+          <div class="qa-body"><p>A brochure/content site with little interactivity (plain HTML or Astro is lighter); a purely internal SPA with no SEO and no server rendering (Vite + React is simpler); or anywhere you can't run a Node/serverless host. Next wins when you need server-rendered HTML <em>and</em> rich interactivity <em>and</em> server data in one app.</p></div>
+        </details>
+
+        <details class="qa"><summary>In-memory store — why does my data reset?</summary>
+          <div class="qa-body"><p>The demo's <code>data.ts</code> uses plain in-memory arrays, which reset when the dev server restarts (and aren't shared across server instances). That's fine for teaching. In a real app the action writes to a database at the same spot — the action/<code>revalidatePath</code> pattern is identical; only the storage changes.</p></div>
+        </details>
+      </section>
+
+      <!-- 12 (was 11) -->
+      <section class="card" id="traps">
+        <h2><span class="sec-num">12</span>Trainer traps &amp; repair lines</h2>
+        <p class="lead">Mistakes that are easy to make on stage, and the one-liner that fixes each.</p>
+        <table>
+          <thead><tr><th>Trap</th><th>Repair line / fix</th></tr></thead>
+          <tbody>
+            <tr><td>Saying "<code>reset()</code> re-fetches the data" in S1.</td><td>"<code>reset()</code> just retries the render; <code>unstable_retry()</code> is the one that re-fetches. For this demo the page throws during render, so <code>reset()</code> is enough."</td></tr>
+            <tr><td>Calling <code>'use client'</code> a "performance switch."</td><td>"It's a <em>boundary</em> — everything it imports goes client too. That's why putting it at the top is the anti-pattern."</td></tr>
+            <tr><td>Implying the form is the security boundary in S3.</td><td>"Actions are reachable by direct POST — real apps auth-check inside the action. We skip it here on purpose."</td></tr>
+            <tr><td>Typing <code>next dev --turbopack</code> out of habit.</td><td>"No flag in v16 — Turbopack is the default. The banner already says Turbopack."</td></tr>
+            <tr><td>Promising the old "First Load JS" numbers from <code>next build</code>.</td><td>"v16 removed those columns — they were misleading under RSC. Use the browser/Network tab instead."</td></tr>
+            <tr><td>Being tempted to enable caching to "show it off."</td><td>"Cache Components stays off all course — turning it on breaks the demos with build errors. It's a day-2 topic." (Also forbidden by <code>AGENTS.md</code>.)</td></tr>
+            <tr><td>Conflating SSR with SSG when explaining Next.js.</td><td>"SSR renders on every request — fresh data. SSG renders at build time. Our course is SSR: Cache Components is off, so every request hits the server fresh."</td></tr>
+            <tr><td>A trainee asks something you don't know.</td><td>"Great question — let's check the official docs together" beats guessing. The docs are in <code>node_modules/next/dist/docs/</code> and at nextjs.org. Never invent an API on stage.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 13 (was 12) -->
+      <section class="card" id="sources">
+        <h2><span class="sec-num">13</span>Sources &amp; fact-check</h2>
+        <p>Every v16-specific claim above was verified against the official Next.js docs and corroborated with
+          the v16 release/upgrade notes. Primary references:</p>
+        <ul class="src-list">
+          <li>Next.js 16 release — <a href="https://nextjs.org/blog/next-16">nextjs.org/blog/next-16</a></li>
+          <li>Upgrading to Version 16 (breaking changes) — <a href="https://nextjs.org/docs/app/guides/upgrading/version-16">nextjs.org/docs/app/guides/upgrading/version-16</a></li>
+          <li>Server &amp; Client Components — <a href="https://nextjs.org/docs/app/getting-started/server-and-client-components">getting-started/server-and-client-components</a></li>
+          <li>Layouts &amp; Pages (async <code>params</code>/<code>searchParams</code>) — <a href="https://nextjs.org/docs/app/getting-started/layouts-and-pages">getting-started/layouts-and-pages</a></li>
+          <li><code>loading.js</code> (auto Suspense boundary) — <a href="https://nextjs.org/docs/app/api-reference/file-conventions/loading">file-conventions/loading</a></li>
+          <li><code>error.js</code> (Client Component, <code>error</code> + retry) — <a href="https://nextjs.org/docs/app/api-reference/file-conventions/error">file-conventions/error</a></li>
+          <li><code>not-found.js</code> — <a href="https://nextjs.org/docs/app/api-reference/file-conventions/not-found">file-conventions/not-found</a></li>
+          <li>Route Handlers (<code>route.ts</code>) — <a href="https://nextjs.org/docs/app/api-reference/file-conventions/route">file-conventions/route</a></li>
+          <li>Mutating data (Server Actions, progressive enhancement, <code>useActionState</code>) — <a href="https://nextjs.org/docs/app/getting-started/mutating-data">getting-started/mutating-data</a></li>
+          <li><code>cookies()</code> / <code>headers()</code> / <code>draftMode()</code> are async — <a href="https://nextjs.org/docs/app/api-reference/functions/cookies">functions/cookies</a>, <a href="https://nextjs.org/docs/app/api-reference/functions/headers">functions/headers</a>, <a href="https://nextjs.org/docs/app/api-reference/functions/draft-mode">functions/draft-mode</a></li>
+          <li><code>revalidatePath</code> / <code>revalidateTag</code> (v16 2-arg) — <a href="https://nextjs.org/docs/app/api-reference/functions/revalidatePath">functions/revalidatePath</a>, <a href="https://nextjs.org/docs/app/api-reference/functions/revalidateTag">functions/revalidateTag</a></li>
+          <li>Cache Components / <code>cacheComponents</code> — <a href="https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents">config/cacheComponents</a></li>
+          <li><code>generateMetadata</code> — <a href="https://nextjs.org/docs/app/api-reference/functions/generate-metadata">functions/generate-metadata</a></li>
+          <li>Prefetching defaults — <a href="https://nextjs.org/docs/app/guides/prefetching">guides/prefetching</a></li>
+          <li>Next.js 16.2 (use cache, retry semantics) — <a href="https://nextjs.org/blog/next-16-2">nextjs.org/blog/next-16-2</a></li>
+        </ul>
+        <div class="callout">
+          <strong>Local copy:</strong> the same docs ship inside the repo at
+          <code>node_modules/next/dist/docs/</code> — open them live in the room rather than guessing if a
+          question goes beyond this sheet.
+        </div>
+        <p class="snippet-note">Verified against the docs snapshot current as of the course (Next.js 16.2.x). If you're on a later patch, sanity-check <code>revalidateTag</code> and the <code>error.tsx</code> retry API, as those are the most actively evolving.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral', flowchart: { useMaxWidth: true } });
+  </script>
+</body>
+
+</html>
